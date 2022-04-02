@@ -73,17 +73,7 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 }
 
 func (state *statePlaying) addRandomCheat() {
-	cheatIDs := make([]string, 0)
-	for id := range allCheats {
-		cheatIDs = append(cheatIDs, id)
-	}
-	id := cheatIDs[rand.Intn(len(cheatIDs))]
-	newCheat := cheat{
-		id:              id,
-		markerAnimation: animation.NewFrames(3, 80),
-	}
-	newCheat.markerAnimation.Randomize()
-	state.data.cheats.availableCheats = append(state.data.cheats.availableCheats, newCheat)
+	state.data.addRandomCheat()
 }
 
 func (state *statePlaying) unselectCheat() {

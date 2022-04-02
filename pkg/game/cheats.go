@@ -1,6 +1,8 @@
 package game
 
 import (
+	"math/rand"
+
 	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
 )
 
@@ -61,6 +63,20 @@ func (chs *cheats) trySelectCheat(x int, y int) {
 			return
 		}
 	}
+}
+
+func (chs *cheats) addRandomCheat() {
+	cheatIDs := make([]string, 0)
+	for id := range allCheats {
+		cheatIDs = append(cheatIDs, id)
+	}
+	id := cheatIDs[rand.Intn(len(cheatIDs))]
+	newCheat := cheat{
+		id:              id,
+		markerAnimation: animation.NewFrames(3, 80),
+	}
+	newCheat.markerAnimation.Randomize()
+	chs.availableCheats = append(chs.availableCheats, newCheat)
 }
 
 const (

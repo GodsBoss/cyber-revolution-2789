@@ -35,3 +35,7 @@ func (data *playingData) areAllTargetsSelected() bool {
 func (data *playingData) trySelectCheat(x int, y int) {
 	data.cheats.trySelectCheat(x, y)
 }
+
+func (data *playingData) addRandomCheat() {
+	data.cheats.addRandomCheat()
+}
