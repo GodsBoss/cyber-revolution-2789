@@ -82,10 +82,6 @@ func (state *statePlaying) tryActivateCheat(x int, y int) {
 	state.data.tryActivateCheat(x, y)
 }
 
-func (state *statePlaying) cheatCoords(index int) (x int, y int) {
-	return state.data.cheatCoords(index)
-}
-
 func (state *statePlaying) addRandomPerson(x float64) {
 	ids := make([]string, 0)
 	for id := range allPersonTypes {
