@@ -45,7 +45,7 @@ func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next
 	if event.Type == interaction.MouseUp {
 		// No cheat selected yet, so try to select one.
 		if state.data.isNoCheatSelected() {
-			state.trySelectCheat(event.X, event.Y)
+			state.data.trySelectCheat(event.X, event.Y)
 			return ""
 		}
 
@@ -84,24 +84,6 @@ func (state *statePlaying) addRandomCheat() {
 	}
 	newCheat.markerAnimation.Randomize()
 	state.data.cheats.availableCheats = append(state.data.cheats.availableCheats, newCheat)
-}
-
-func (state *statePlaying) trySelectCheat(x int, y int) {
-	for i := range state.data.cheats.availableCheats {
-		cheatX, cheatY := state.cheatCoords(i)
-
-		cheatBounds := rectangle{
-			x:      cheatX,
-			y:      cheatY,
-			width:  cheatWidth,
-			height: cheatHeight,
-		}
-
-		if cheatBounds.withinBounds(x, y) {
-			state.data.cheats.selectedCheat = i
-			return
-		}
-	}
 }
 
 func (state *statePlaying) unselectCheat() {

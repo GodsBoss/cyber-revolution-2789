@@ -45,6 +45,24 @@ func (chs *cheats) areAllTargetsSelected() bool {
 	return len(allCheats[chs.availableCheats[chs.selectedCheat].id].targets) == len(chs.selectedCheatTargets)
 }
 
+func (chs *cheats) trySelectCheat(x int, y int) {
+	for i := range chs.availableCheats {
+		cheatX, cheatY := chs.cheatCoords(i)
+
+		cheatBounds := rectangle{
+			x:      cheatX,
+			y:      cheatY,
+			width:  cheatWidth,
+			height: cheatHeight,
+		}
+
+		if cheatBounds.withinBounds(x, y) {
+			chs.selectedCheat = i
+			return
+		}
+	}
+}
+
 const (
 	noCheatSelected = -1
 )
