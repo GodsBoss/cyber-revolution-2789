@@ -29,6 +29,7 @@ const (
 
 func (state *statePlayingStart) init() {
 	state.data.init()
+	state.data.setMostRightX(killChamberX - personHorizontalDistance)
 
 	state.remainingPersons = []func(x float64){
 		state.data.addRandomPerson,

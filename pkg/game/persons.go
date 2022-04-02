@@ -8,17 +8,36 @@ import (
 
 type personQueue struct {
 	persons []person
+
+	personMostRightX float64
 }
 
 func (queue *personQueue) init() {
 	queue.persons = make([]person, 0)
 }
 
+func (queue *personQueue) setMostRightX(x float64) {
+	queue.personMostRightX = x
+}
+
 func (queue *personQueue) calculateDesiredX() {
 	l := len(queue.persons)
 	for i := range queue.persons {
-		queue.persons[i].desiredX = float64(personMostRightX - personHorizontalDistance*(l-i-1))
+		queue.persons[i].desiredX = float64(int(queue.personMostRightX) - personHorizontalDistance*(l-i-1))
 	}
+}
+
+func (queue *personQueue) removeMostRightPerson() {
+	queue.persons = queue.persons[:len(queue.persons)-1]
+}
+
+func (queue *personQueue) isPlayerAlive() bool {
+	for _, person := range queue.persons {
+		if person.Type == personTypePlayer {
+			return true
+		}
+	}
+	return false
 }
 
 func (queue *personQueue) Tick(ms int) {
@@ -102,7 +121,7 @@ const (
 	personMostRightX = 260
 
 	// personSpeed is the speed of a person in pixel per second.
-	personSpeed = 25
+	personSpeed = 75
 )
 
 type personType struct {

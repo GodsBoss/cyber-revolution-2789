@@ -21,7 +21,7 @@ func (state *statePlayingInvokeAction) tick(ms int) (next string) {
 	state.data.tick(ms)
 
 	if !state.data.isAnyPersonMoving() {
-		return statePlayingInteractionID
+		return statePlayingKillID
 	}
 
 	return ""

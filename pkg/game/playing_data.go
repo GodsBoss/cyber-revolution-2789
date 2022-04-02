@@ -179,3 +179,15 @@ func (data *playingData) renderedCheats(sf *spriteFactory, includeMarkers bool) 
 func (data *playingData) isAnyPersonMoving() bool {
 	return data.personQueue.isAnyPersonMoving()
 }
+
+func (data *playingData) setMostRightX(x float64) {
+	data.personQueue.setMostRightX(x)
+}
+
+func (data *playingData) removeMostRightPerson() {
+	data.personQueue.removeMostRightPerson()
+}
+
+func (data *playingData) isPlayerAlive() bool {
+	return data.personQueue.isPlayerAlive()
+}
