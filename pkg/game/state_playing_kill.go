@@ -40,10 +40,10 @@ func (state *statePlayingKill) tick(ms int) (next string) {
 			state.nextKillState = 500
 			state.killState = killStates[1]
 		case killStates[1]:
-			state.nextKillState = 50
+			state.nextKillState = 100
 			state.killState = killStates[2]
 		case killStates[2]:
-			state.nextKillState = 50
+			state.nextKillState = 100
 			state.killFadingFrame++
 			if state.killFadingFrame > 7 {
 				state.killState = ""
