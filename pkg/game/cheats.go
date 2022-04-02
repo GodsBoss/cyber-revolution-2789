@@ -96,6 +96,14 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 		}
 	}
 
+	if state.selectedCheat != noCheatSelected && len(allCheats[state.cheats[state.selectedCheat].id].targets) == len(state.selectedCheatTargets) {
+		x, y := state.cheatCoords(state.selectedCheat)
+		renderables = append(
+			renderables,
+			state.spriteFactory.create("cheat_marker", x-3, y-3, state.cheats[state.selectedCheat].markerAnimation.Frame()),
+		)
+	}
+
 	return renderables
 }
 
