@@ -28,7 +28,13 @@ func (queue *personQueue) Tick(ms int) {
 }
 
 func (queue *personQueue) addPerson(p person) {
+	p.markerAnimation = animation.NewFrames(3, 49)
+	p.markerAnimation.Randomize()
+	p.selectionAnimation = animation.NewFrames(3, 49)
+	p.selectionAnimation.Randomize()
+
 	queue.persons = append([]person{p}, queue.persons...)
+	queue.calculateDesiredX()
 }
 
 type person struct {

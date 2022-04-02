@@ -3,7 +3,6 @@ package game
 import (
 	"math/rand"
 
-	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
 	"github.com/GodsBoss/gggg/pkg/interaction"
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
@@ -172,11 +171,5 @@ func (state *statePlaying) addPlayer(x float64) {
 }
 
 func (state *statePlaying) addPerson(p person) {
-	p.markerAnimation = animation.NewFrames(3, 49)
-	p.markerAnimation.Randomize()
-	p.selectionAnimation = animation.NewFrames(3, 49)
-	p.selectionAnimation.Randomize()
-
-	state.data.personQueue.addPerson(p)
-	state.data.personQueue.calculateDesiredX()
+	state.data.addPerson(p)
 }

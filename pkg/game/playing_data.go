@@ -68,3 +68,7 @@ func (data *playingData) tryActivateCheat(x int, y int) {
 
 	data.addRandomCheat()
 }
+
+func (data *playingData) addPerson(p person) {
+	data.personQueue.addPerson(p)
+}
