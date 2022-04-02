@@ -1,8 +1,6 @@
 package game
 
 import (
-	"math/rand"
-
 	"github.com/GodsBoss/gggg/pkg/interaction"
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
@@ -19,9 +17,9 @@ func (state *statePlaying) init() {
 	state.data = &playingData{}
 	state.data.init()
 
-	state.addRandomPerson(180)
-	state.addPlayer(140)
-	state.addRandomPerson(100)
+	state.data.addRandomPerson(180)
+	state.data.addPlayer(140)
+	state.data.addRandomPerson(100)
 
 	state.addRandomCheat()
 	state.addRandomCheat()
@@ -80,34 +78,4 @@ func (state *statePlaying) unselectCheat() {
 
 func (state *statePlaying) tryActivateCheat(x int, y int) {
 	state.data.tryActivateCheat(x, y)
-}
-
-func (state *statePlaying) addRandomPerson(x float64) {
-	ids := make([]string, 0)
-	for id := range allPersonTypes {
-		if id != personTypePlayer {
-			ids = append(ids, id)
-		}
-	}
-	typ := ids[rand.Intn(len(ids))]
-
-	state.addPerson(
-		person{
-			Type: typ,
-			x:    x,
-		},
-	)
-}
-
-func (state *statePlaying) addPlayer(x float64) {
-	state.addPerson(
-		person{
-			Type: personTypePlayer,
-			x:    x,
-		},
-	)
-}
-
-func (state *statePlaying) addPerson(p person) {
-	state.data.addPerson(p)
 }

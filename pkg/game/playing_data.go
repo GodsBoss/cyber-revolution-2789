@@ -1,6 +1,10 @@
 package game
 
-import "github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
+import (
+	"math/rand"
+
+	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
+)
 
 type playingData struct {
 	personQueue personQueue
@@ -69,6 +73,32 @@ func (data *playingData) tryActivateCheat(x int, y int) {
 	data.personQueue.calculateDesiredX()
 
 	data.addRandomCheat()
+}
+
+func (data *playingData) addRandomPerson(x float64) {
+	ids := make([]string, 0)
+	for id := range allPersonTypes {
+		if id != personTypePlayer {
+			ids = append(ids, id)
+		}
+	}
+	typ := ids[rand.Intn(len(ids))]
+
+	data.addPerson(
+		person{
+			Type: typ,
+			x:    x,
+		},
+	)
+}
+
+func (data *playingData) addPlayer(x float64) {
+	data.addPerson(
+		person{
+			Type: personTypePlayer,
+			x:    x,
+		},
+	)
 }
 
 func (data *playingData) addPerson(p person) {
