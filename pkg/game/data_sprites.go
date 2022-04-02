@@ -79,4 +79,22 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
+	"kill_prolog": {
+		X: 301,
+		Y: 342,
+		W: 32,
+		H: 48,
+	},
+	"kill_blazing": {
+		X: 301,
+		Y: 391,
+		W: 32,
+		H: 48,
+	},
+	"kill_fading": {
+		X: 301,
+		Y: 440,
+		W: 32,
+		H: 48,
+	},
 }

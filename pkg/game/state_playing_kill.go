@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
 	"github.com/GodsBoss/gggg/pkg/interaction"
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
@@ -12,17 +13,45 @@ type statePlayingKill struct {
 	spriteFactory *spriteFactory
 
 	data *playingData
+
+	killState       string
+	nextKillState   int
+	killAnimation   animation.Frames
+	killFadingFrame int
 }
 
 func (state *statePlayingKill) init() {
 	state.data.setMostRightX(killChamberX)
 	state.data.personQueue.calculateDesiredX()
+
+	state.killState = killStates[0]
+	state.nextKillState = 500
+	state.killAnimation = animation.NewFrames(3, 75)
 }
 
 func (state *statePlayingKill) tick(ms int) (next string) {
 	state.data.tick(ms)
+	state.killAnimation.Tick(ms)
 
-	if !state.data.isAnyPersonMoving() {
+	state.nextKillState -= ms
+	if state.nextKillState <= 0 {
+		switch state.killState {
+		case killStates[0]:
+			state.nextKillState = 500
+			state.killState = killStates[1]
+		case killStates[1]:
+			state.nextKillState = 50
+			state.killState = killStates[2]
+		case killStates[2]:
+			state.nextKillState = 50
+			state.killFadingFrame++
+			if state.killFadingFrame > 7 {
+				state.killState = ""
+			}
+		}
+	}
+
+	if !state.data.isAnyPersonMoving() && state.killState == "" {
 		state.data.setMostRightX(killChamberX - personHorizontalDistance)
 		state.data.removeMostRightPerson()
 
@@ -52,7 +81,29 @@ func (state *statePlayingKill) renderable() canvas2drendering.Renderable {
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
 
+	switch state.killState {
+	case killStates[0]:
+		renderables = append(
+			renderables,
+			state.spriteFactory.create("kill_"+killStates[0], killChamberX, personRenderY, state.killAnimation.Frame()),
+		)
+	case killStates[1]:
+		renderables = append(
+			renderables,
+			state.spriteFactory.create("kill_"+killStates[1], killChamberX, personRenderY, state.killAnimation.Frame()),
+		)
+	case killStates[2]:
+		renderables = append(
+			renderables, state.spriteFactory.create("kill_"+killStates[2], killChamberX, personRenderY, state.killFadingFrame),
+		)
+	}
 	return renderables
 }
 
 const killChamberX = 280.0
+
+var killStates = []string{
+	"prolog",
+	"blazing",
+	"fading",
+}
