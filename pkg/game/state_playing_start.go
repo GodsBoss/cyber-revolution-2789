@@ -62,7 +62,7 @@ func (state *statePlayingStart) tick(ms int) (next string) {
 	}
 
 	if len(state.remainingPersons) == 0 && state.remainingCheats == 0 {
-		return statePlayingID
+		return statePlayingInteractionID
 	}
 
 	return ""

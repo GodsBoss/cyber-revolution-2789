@@ -128,7 +128,7 @@ type cheatAction struct {
 	invoke func(queue *personQueue, targets []int)
 }
 
-func (state *statePlaying) trySelectTarget(x int, y int) {
+func (state *statePlayingInteraction) trySelectTarget(x int, y int) {
 	ch := allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id]
 	targetCandidates := make([]int, 0)
 

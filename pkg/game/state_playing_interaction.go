@@ -5,30 +5,30 @@ import (
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
-const statePlayingID = "playing"
+const statePlayingInteractionID = "playing"
 
-type statePlaying struct {
+type statePlayingInteraction struct {
 	spriteFactory *spriteFactory
 
 	data *playingData
 }
 
-func (state *statePlaying) init() {}
+func (state *statePlayingInteraction) init() {}
 
-func (state *statePlaying) tick(ms int) (next string) {
+func (state *statePlayingInteraction) tick(ms int) (next string) {
 	state.data.tick(ms)
 
 	return ""
 }
 
-func (state *statePlaying) receiveKeyEvent(event interaction.KeyEvent) (next string) {
+func (state *statePlayingInteraction) receiveKeyEvent(event interaction.KeyEvent) (next string) {
 	if event.Type == interaction.KeyUp && event.Key == "Escape" {
 		state.unselectCheat()
 	}
 	return ""
 }
 
-func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next string) {
+func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseEvent) (next string) {
 	if event.Type == interaction.MouseUp {
 		// No cheat selected yet, so try to select one.
 		if state.data.isNoCheatSelected() {
@@ -49,7 +49,7 @@ func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next
 	return ""
 }
 
-func (state *statePlaying) renderable() canvas2drendering.Renderable {
+func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
@@ -58,10 +58,10 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 	return renderables
 }
 
-func (state *statePlaying) unselectCheat() {
+func (state *statePlayingInteraction) unselectCheat() {
 	state.data.unselectCheat()
 }
 
-func (state *statePlaying) tryActivateCheat(x int, y int) {
+func (state *statePlayingInteraction) tryActivateCheat(x int, y int) {
 	state.data.tryActivateCheat(x, y)
 }
