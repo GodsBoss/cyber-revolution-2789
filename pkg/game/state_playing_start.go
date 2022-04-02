@@ -15,21 +15,24 @@ type statePlayingStart struct {
 	data *playingData
 
 	remainingPersons []func(x float64)
-	nextPerson       int
 
 	remainingCheats int
 	nextCheat       int
+
+	beam              *beam
+	waitForBeamIsOver bool
 }
 
 const (
-	// timeBetweenPersonSpawns is the time between person spawns in ms.
-	timeBetweenPersonSpawns = 1000
 	timeBetweenCheatsSpawns = 2000
 )
 
 func (state *statePlayingStart) init() {
 	state.data.init()
 	state.data.setMostRightX(killChamberX - personHorizontalDistance)
+
+	state.beam = newBeam()
+	state.waitForBeamIsOver = false
 
 	state.remainingPersons = []func(x float64){
 		state.data.addRandomPerson,
@@ -47,10 +50,15 @@ func (state *statePlayingStart) init() {
 
 func (state *statePlayingStart) tick(ms int) (next string) {
 	state.data.tick(ms)
+	state.beam.tick(ms)
 
-	state.nextPerson -= ms
-	if state.nextPerson <= 0 && len(state.remainingPersons) > 0 {
-		state.nextPerson += timeBetweenPersonSpawns
+	if state.waitForBeamIsOver && state.beam.isOver() && len(state.remainingPersons) > 0 {
+		state.waitForBeamIsOver = false
+		state.beam = newBeam()
+	}
+
+	if state.beam.isBeamed() && !state.waitForBeamIsOver && len(state.remainingPersons) > 0 {
+		state.waitForBeamIsOver = true
 		state.remainingPersons[0](0)
 		state.remainingPersons = state.remainingPersons[1:]
 	}
@@ -84,6 +92,7 @@ func (state *statePlayingStart) renderable() canvas2drendering.Renderable {
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
+	renderables = append(renderables, state.beam.rendered(state.spriteFactory, 0, personRenderY))
 
 	return renderables
 }
