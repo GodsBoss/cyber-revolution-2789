@@ -1,4 +1,4 @@
-module github.com/GodsBoss/delay-the-inevitable
+module github.com/GodsBoss/cyber-revolution-2789
 
 go 1.18
 

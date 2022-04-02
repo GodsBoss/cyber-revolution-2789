@@ -1,7 +1,7 @@
 package game
 
 import (
-	"github.com/GodsBoss/delay-the-inevitable/pkg/scale"
+	"github.com/GodsBoss/cyber-revolution-2789/pkg/scale"
 	"github.com/GodsBoss/gggg/pkg/dom"
 	"github.com/GodsBoss/gggg/pkg/dominit"
 )
