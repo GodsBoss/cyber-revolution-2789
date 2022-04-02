@@ -61,4 +61,22 @@ var dataSprites = map[string]SpriteInfo{
 		W: 24,
 		H: 24,
 	},
+	"beam_start": {
+		X: 301,
+		Y: 187,
+		W: 32,
+		H: 48,
+	},
+	"beam_middle": {
+		X: 301,
+		Y: 236,
+		W: 32,
+		H: 48,
+	},
+	"beam_end": {
+		X: 301,
+		Y: 285,
+		W: 32,
+		H: 48,
+	},
 }
