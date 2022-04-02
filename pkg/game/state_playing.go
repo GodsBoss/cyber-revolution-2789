@@ -7,11 +7,6 @@ import (
 
 const statePlayingID = "playing"
 
-type playingData struct {
-	personQueue *personQueue
-	cheats      cheats
-}
-
 type statePlaying struct {
 	spriteFactory *spriteFactory
 
