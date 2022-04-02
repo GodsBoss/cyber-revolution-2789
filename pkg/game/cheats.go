@@ -18,6 +18,12 @@ type cheats struct {
 	selectedCheatTargets []int
 }
 
+func (chs *cheats) init() {
+	chs.availableCheats = make([]cheat, 0)
+	chs.selectedCheat = noCheatSelected
+	chs.selectedCheatTargets = nil
+}
+
 func (chs *cheats) unselectCheat() {
 	chs.selectedCheat = noCheatSelected
 	chs.selectedCheatTargets = nil

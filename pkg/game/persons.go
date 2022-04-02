@@ -42,6 +42,10 @@ type personQueue struct {
 	persons []person
 }
 
+func (queue *personQueue) init() {
+	queue.persons = make([]person, 0)
+}
+
 func (queue *personQueue) calculateDesiredX() {
 	l := len(queue.persons)
 	for i := range queue.persons {

@@ -7,14 +7,8 @@ type playingData struct {
 
 // init initializes the data with everything being empty.
 func (data *playingData) init() {
-	data.personQueue = personQueue{
-		persons: make([]person, 0),
-	}
-	data.cheats = cheats{
-		availableCheats:      make([]cheat, 0),
-		selectedCheat:        noCheatSelected,
-		selectedCheatTargets: nil,
-	}
+	data.personQueue.init()
+	data.cheats.init()
 }
 
 func (data *playingData) unselectCheat() {
