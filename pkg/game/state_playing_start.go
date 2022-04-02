@@ -24,14 +24,14 @@ type statePlayingStart struct {
 }
 
 const (
-	timeBetweenCheatsSpawns = 2000
+	timeBetweenCheatsSpawns = 750
 )
 
 func (state *statePlayingStart) init() {
 	state.data.init()
 	state.data.setMostRightX(killChamberX - personHorizontalDistance)
 
-	state.beam = newBeam()
+	state.beam = newBeam(150)
 	state.waitForBeamIsOver = false
 
 	state.remainingPersons = []func(x float64){
@@ -45,7 +45,7 @@ func (state *statePlayingStart) init() {
 	}
 
 	state.remainingCheats = 4
-	state.nextCheat = 1500
+	state.nextCheat = 1000
 }
 
 func (state *statePlayingStart) tick(ms int) (next string) {
@@ -54,7 +54,7 @@ func (state *statePlayingStart) tick(ms int) (next string) {
 
 	if state.waitForBeamIsOver && state.beam.isOver() && len(state.remainingPersons) > 0 {
 		state.waitForBeamIsOver = false
-		state.beam = newBeam()
+		state.beam = newBeam(150)
 	}
 
 	if state.beam.isBeamed() && !state.waitForBeamIsOver && len(state.remainingPersons) > 0 {

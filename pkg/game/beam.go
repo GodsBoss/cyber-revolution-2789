@@ -5,15 +5,18 @@ import (
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
-func newBeam() *beam {
+func newBeam(switchInterval int) *beam {
 	return &beam{
-		phase:         beamStates[0],
-		nextBeamState: beamStateSwitchInterval,
-		animation:     animation.NewFrames(3, 75),
+		switchInterval: switchInterval,
+		phase:          beamStates[0],
+		nextBeamState:  switchInterval,
+		animation:      animation.NewFrames(3, 75),
 	}
 }
 
 type beam struct {
+	switchInterval int
+
 	phase         string
 	nextBeamState int
 
@@ -28,10 +31,10 @@ func (b *beam) tick(ms int) {
 		switch b.phase {
 		case beamStates[0]:
 			b.phase = beamStates[1]
-			b.nextBeamState = beamStateSwitchInterval
+			b.nextBeamState = b.switchInterval
 		case beamStates[1]:
 			b.phase = beamStates[2]
-			b.nextBeamState = beamStateSwitchInterval
+			b.nextBeamState = b.switchInterval
 		case beamStates[2]:
 			b.phase = ""
 		}
@@ -58,5 +61,3 @@ var beamStates = []string{
 	"middle",
 	"end",
 }
-
-const beamStateSwitchInterval = 500

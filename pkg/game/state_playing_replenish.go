@@ -21,11 +21,11 @@ type statePlayingReplenish struct {
 }
 
 func (state *statePlayingReplenish) init() {
-	state.beam = newBeam()
+	state.beam = newBeam(350)
 	state.addedPerson = false
 
 	state.remainingCheats = 1
-	state.nextCheat = 1000
+	state.nextCheat = nextCheatInterval
 }
 
 func (state *statePlayingReplenish) tick(ms int) (next string) {
@@ -44,7 +44,7 @@ func (state *statePlayingReplenish) tick(ms int) (next string) {
 
 	state.nextCheat -= ms
 	if state.nextCheat <= 0 && state.remainingCheats > 0 {
-		state.nextCheat += 1000
+		state.nextCheat += nextCheatInterval
 		state.remainingCheats--
 		state.data.addRandomCheat()
 	}
@@ -69,3 +69,5 @@ func (state *statePlayingReplenish) renderable() canvas2drendering.Renderable {
 
 	return renderables
 }
+
+const nextCheatInterval = 250
