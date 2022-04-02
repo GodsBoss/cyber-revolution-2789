@@ -73,7 +73,7 @@ func (state *statePlaying) tryActivateCheat(x int, y int) {
 		return
 	}
 
-	allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].invoke(state.data.personQueue, state.data.cheats.selectedCheatTargets)
+	allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].invoke(&state.data.personQueue, state.data.cheats.selectedCheatTargets)
 
 	// Cheat has been used, remove it.
 	state.data.cheats.availableCheats = append(
@@ -191,20 +191,20 @@ func (state *statePlaying) trySelectTarget(x int, y int) {
 }
 
 type cheatTarget interface {
-	isValidTarget(queue *personQueue, index int, currentTargets []int) bool
+	isValidTarget(queue personQueue, index int, currentTargets []int) bool
 }
 
 // cheatTargetAny accepts any person as a target.
 type cheatTargetAny struct{}
 
-func (target cheatTargetAny) isValidTarget(_ *personQueue, _ int, _ []int) bool {
+func (target cheatTargetAny) isValidTarget(_ personQueue, _ int, _ []int) bool {
 	return true
 }
 
 // cheatTargetNotTargeted accepts any person as a target that has not been targeted as a target so far.
 type cheatTargetNotTargeted struct{}
 
-func (target cheatTargetNotTargeted) isValidTarget(_ *personQueue, index int, currentTargets []int) bool {
+func (target cheatTargetNotTargeted) isValidTarget(_ personQueue, index int, currentTargets []int) bool {
 	for _, currentTargetIndex := range currentTargets {
 		if currentTargetIndex == index {
 			return false
@@ -215,7 +215,7 @@ func (target cheatTargetNotTargeted) isValidTarget(_ *personQueue, index int, cu
 
 type cheatTargetHasTag string
 
-func (target cheatTargetHasTag) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+func (target cheatTargetHasTag) isValidTarget(queue personQueue, index int, currentTargets []int) bool {
 	targetTags := allPersonTypes[queue.persons[index].Type].tags
 	for _, tag := range targetTags {
 		if tag == string(target) {
@@ -229,13 +229,13 @@ type cheatTargetNot struct {
 	target cheatTarget
 }
 
-func (target cheatTargetNot) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+func (target cheatTargetNot) isValidTarget(queue personQueue, index int, currentTargets []int) bool {
 	return !target.target.isValidTarget(queue, index, currentTargets)
 }
 
 type cheatTargetAnd []cheatTarget
 
-func (target cheatTargetAnd) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+func (target cheatTargetAnd) isValidTarget(queue personQueue, index int, currentTargets []int) bool {
 	for _, t := range target {
 		if !t.isValidTarget(queue, index, currentTargets) {
 			return false
@@ -246,7 +246,7 @@ func (target cheatTargetAnd) isValidTarget(queue *personQueue, index int, curren
 
 type cheatTargetOr []cheatTarget
 
-func (target cheatTargetOr) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+func (target cheatTargetOr) isValidTarget(queue personQueue, index int, currentTargets []int) bool {
 	for _, t := range target {
 		if t.isValidTarget(queue, index, currentTargets) {
 			return true
