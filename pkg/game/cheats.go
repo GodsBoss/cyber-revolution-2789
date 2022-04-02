@@ -1,10 +1,7 @@
 package game
 
 import (
-	"math/rand"
-
 	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
-	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
 type cheats struct {
@@ -39,71 +36,6 @@ func (chs *cheats) isNoCheatSelected() bool {
 	return chs.selectedCheat == noCheatSelected
 }
 
-func (state *statePlaying) addRandomCheat() {
-	cheatIDs := make([]string, 0)
-	for id := range allCheats {
-		cheatIDs = append(cheatIDs, id)
-	}
-	id := cheatIDs[rand.Intn(len(cheatIDs))]
-	newCheat := cheat{
-		id:              id,
-		markerAnimation: animation.NewFrames(3, 80),
-	}
-	newCheat.markerAnimation.Randomize()
-	state.data.cheats.availableCheats = append(state.data.cheats.availableCheats, newCheat)
-}
-
-func (state *statePlaying) unselectCheat() {
-	state.data.unselectCheat()
-}
-
-func (state *statePlaying) trySelectCheat(x int, y int) {
-	for i := range state.data.cheats.availableCheats {
-		cheatX, cheatY := state.cheatCoords(i)
-
-		cheatBounds := rectangle{
-			x:      cheatX,
-			y:      cheatY,
-			width:  cheatWidth,
-			height: cheatHeight,
-		}
-
-		if cheatBounds.withinBounds(x, y) {
-			state.data.cheats.selectedCheat = i
-			return
-		}
-	}
-}
-
-func (state *statePlaying) tryActivateCheat(x int, y int) {
-	cheatX, cheatY := state.cheatCoords(state.data.cheats.selectedCheat)
-
-	cheatBounds := rectangle{
-		x:      cheatX,
-		y:      cheatY,
-		width:  cheatWidth,
-		height: cheatHeight,
-	}
-
-	if !cheatBounds.withinBounds(x, y) {
-		return
-	}
-
-	allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].invoke(&state.data.personQueue, state.data.cheats.selectedCheatTargets)
-
-	// Cheat has been used, remove it.
-	state.data.cheats.availableCheats = append(
-		state.data.cheats.availableCheats[0:state.data.cheats.selectedCheat],
-		state.data.cheats.availableCheats[state.data.cheats.selectedCheat+1:]...,
-	)
-	state.unselectCheat()
-
-	// Person queue probably changed, recalculate.
-	state.data.personQueue.calculateDesiredX()
-
-	state.addRandomCheat()
-}
-
 const (
 	noCheatSelected = -1
 )
@@ -112,37 +44,6 @@ type cheat struct {
 	id string
 
 	markerAnimation animation.Frames
-}
-
-func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
-	l := len(state.data.cheats.availableCheats)
-
-	renderables := make(canvas2drendering.Renderables, l)
-
-	for i, cheat := range state.data.cheats.availableCheats {
-		x, y := state.cheatCoords(i)
-
-		renderables[i] = state.spriteFactory.create(cheat.SpriteID(), x, y, 0)
-
-		// If no cheat is selected, highlight all cheats as possible user interactions.
-		if state.data.isNoCheatSelected() {
-			renderables = append(renderables, state.spriteFactory.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
-		}
-	}
-
-	if !state.data.isNoCheatSelected() && len(allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets) == len(state.data.cheats.selectedCheatTargets) {
-		x, y := state.cheatCoords(state.data.cheats.selectedCheat)
-		renderables = append(
-			renderables,
-			state.spriteFactory.create("cheat_marker", x-3, y-3, state.data.cheats.availableCheats[state.data.cheats.selectedCheat].markerAnimation.Frame()),
-		)
-	}
-
-	return renderables
-}
-
-func (state *statePlaying) cheatCoords(index int) (x int, y int) {
-	return state.cheatCoords(index)
 }
 
 func (chs *cheats) cheatCoords(index int) (x int, y int) {
