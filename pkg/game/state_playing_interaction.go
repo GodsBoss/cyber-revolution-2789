@@ -13,7 +13,9 @@ type statePlayingInteraction struct {
 	data *playingData
 }
 
-func (state *statePlayingInteraction) init() {}
+func (state *statePlayingInteraction) init() {
+	state.data.unselectCheat()
+}
 
 func (state *statePlayingInteraction) tick(ms int) (next string) {
 	state.data.tick(ms)
