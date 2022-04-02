@@ -36,6 +36,15 @@ func (chs *cheats) isNoCheatSelected() bool {
 	return chs.selectedCheat == noCheatSelected
 }
 
+// areAllTargetsSelected returns true if a cheat is selected and all its targets, too.
+func (chs *cheats) areAllTargetsSelected() bool {
+	if chs.isNoCheatSelected() {
+		return false
+	}
+
+	return len(allCheats[chs.availableCheats[chs.selectedCheat].id].targets) == len(chs.selectedCheatTargets)
+}
+
 const (
 	noCheatSelected = -1
 )

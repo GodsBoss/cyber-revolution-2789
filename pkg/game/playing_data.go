@@ -27,3 +27,7 @@ func (data *playingData) isNoCheatSelected() bool {
 func (data *playingData) cheatCoords(index int) (x int, y int) {
 	return data.cheats.cheatCoords(index)
 }
+
+func (data *playingData) areAllTargetsSelected() bool {
+	return data.cheats.areAllTargetsSelected()
+}

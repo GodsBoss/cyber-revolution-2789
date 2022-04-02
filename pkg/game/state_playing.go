@@ -50,7 +50,7 @@ func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next
 		}
 
 		// All cheat targets are selected, try to activate cheat.
-		if len(state.data.cheats.selectedCheatTargets) == len(allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets) {
+		if state.data.areAllTargetsSelected() {
 			state.tryActivateCheat(event.X, event.Y)
 			return ""
 		}
@@ -153,7 +153,7 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 		}
 	}
 
-	if !state.data.isNoCheatSelected() && len(allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets) == len(state.data.cheats.selectedCheatTargets) {
+	if state.data.areAllTargetsSelected() {
 		x, y := state.cheatCoords(state.data.cheats.selectedCheat)
 		renderables = append(
 			renderables,
