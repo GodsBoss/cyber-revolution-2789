@@ -66,7 +66,7 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
 	renderables = append(renderables, state.data.renderedPersons(state.spriteFactory)...)
-	renderables = append(renderables, state.renderedCheats()...)
+	renderables = append(renderables, state.data.renderedCheats(state.spriteFactory)...)
 
 	return renderables
 }
@@ -81,33 +81,6 @@ func (state *statePlaying) unselectCheat() {
 
 func (state *statePlaying) tryActivateCheat(x int, y int) {
 	state.data.tryActivateCheat(x, y)
-}
-
-func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
-	l := len(state.data.cheats.availableCheats)
-
-	renderables := make(canvas2drendering.Renderables, l)
-
-	for i, cheat := range state.data.cheats.availableCheats {
-		x, y := state.cheatCoords(i)
-
-		renderables[i] = state.spriteFactory.create(cheat.SpriteID(), x, y, 0)
-
-		// If no cheat is selected, highlight all cheats as possible user interactions.
-		if state.data.isNoCheatSelected() {
-			renderables = append(renderables, state.spriteFactory.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
-		}
-	}
-
-	if state.data.areAllTargetsSelected() {
-		x, y := state.cheatCoords(state.data.cheats.selectedCheat)
-		renderables = append(
-			renderables,
-			state.spriteFactory.create("cheat_marker", x-3, y-3, state.data.cheats.availableCheats[state.data.cheats.selectedCheat].markerAnimation.Frame()),
-		)
-	}
-
-	return renderables
 }
 
 func (state *statePlaying) cheatCoords(index int) (x int, y int) {

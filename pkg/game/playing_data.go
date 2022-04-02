@@ -104,3 +104,30 @@ func (data *playingData) renderedPersons(sf *spriteFactory) canvas2drendering.Re
 	}
 	return renderables
 }
+
+func (data *playingData) renderedCheats(sf *spriteFactory) canvas2drendering.Renderables {
+	l := len(data.cheats.availableCheats)
+
+	renderables := make(canvas2drendering.Renderables, l)
+
+	for i, cheat := range data.cheats.availableCheats {
+		x, y := data.cheatCoords(i)
+
+		renderables[i] = sf.create(cheat.SpriteID(), x, y, 0)
+
+		// If no cheat is selected, highlight all cheats as possible user interactions.
+		if data.isNoCheatSelected() {
+			renderables = append(renderables, sf.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
+		}
+	}
+
+	if data.areAllTargetsSelected() {
+		x, y := data.cheatCoords(data.cheats.selectedCheat)
+		renderables = append(
+			renderables,
+			sf.create("cheat_marker", x-3, y-3, data.cheats.availableCheats[data.cheats.selectedCheat].markerAnimation.Frame()),
+		)
+	}
+
+	return renderables
+}
