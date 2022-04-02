@@ -37,9 +37,13 @@ type game struct {
 	states *states
 }
 
-func (g *game) ReceiveKeyEvent(event interaction.KeyEvent) {}
+func (g *game) ReceiveKeyEvent(event interaction.KeyEvent) {
+	g.states.receiveKeyEvent(event)
+}
 
-func (g *game) ReceiveMouseEvent(event interaction.MouseEvent) {}
+func (g *game) ReceiveMouseEvent(event interaction.MouseEvent) {
+	g.states.receiveMouseEvent(event)
+}
 
 func (g *game) TicksPerSecond() int {
 	return ticksPerSecond
@@ -47,7 +51,9 @@ func (g *game) TicksPerSecond() int {
 
 const ticksPerSecond = 50
 
-func (g *game) Tick(ms int) {}
+func (g *game) Tick(ms int) {
+	g.states.tick(ms)
+}
 
 func (g *game) SetOutput(ctx2d *dom.Context2D) {
 	g.ctx2d = ctx2d
@@ -63,4 +69,6 @@ type scaler interface {
 	Scale(availableWidth, availableHeight int) (realWidth, realHeight int, scale float64)
 }
 
-func (g *game) Render() {}
+func (g *game) Render() {
+	g.states.render(g.ctx2d)
+}
