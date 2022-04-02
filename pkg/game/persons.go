@@ -47,6 +47,10 @@ type person struct {
 	selectionAnimation animation.Frames
 }
 
+func (p person) spriteID() string {
+	return "person_" + p.Type
+}
+
 func (p person) bounds() rectangle {
 	return rectangle{
 		x:      int(math.Floor(p.x)),

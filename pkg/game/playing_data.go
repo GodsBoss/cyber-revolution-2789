@@ -84,7 +84,7 @@ func (data *playingData) rendered(sf *spriteFactory) canvas2drendering.Renderabl
 func (data *playingData) renderedPersons(sf *spriteFactory) canvas2drendering.Renderables {
 	renderables := make(canvas2drendering.Renderables, len(data.personQueue.persons))
 	for i, person := range data.personQueue.persons {
-		renderables[i] = sf.create("person_"+person.Type, int(person.x), personRenderY, 0)
+		renderables[i] = sf.create(person.spriteID(), int(person.x), personRenderY, 0)
 	}
 	for _, index := range data.cheats.selectedCheatTargets {
 		p := data.personQueue.persons[index]
