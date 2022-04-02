@@ -22,22 +22,11 @@ type statePlaying struct {
 
 func (state *statePlaying) init() {
 	state.personQueue = &personQueue{
-		persons: []person{
-			{
-				Type: personTypeGreenAlien,
-				x:    100,
-			},
-			{
-				Type: personTypePlayer,
-				x:    140,
-			},
-			{
-				Type: personTypeGreenAlien,
-				x:    180,
-			},
-		},
+		persons: make([]person, 0),
 	}
-	state.personQueue.calculateDesiredX()
+	state.addRandomPerson(180)
+	state.addPlayer(140)
+	state.addRandomPerson(100)
 
 	state.selectedCheat = noCheatSelected
 	state.cheats = make([]cheat, 0)

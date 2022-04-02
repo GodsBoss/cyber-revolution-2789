@@ -2,7 +2,9 @@ package game
 
 import (
 	"math"
+	"math/rand"
 
+	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
@@ -10,6 +12,13 @@ func (state *statePlaying) persons() canvas2drendering.Renderables {
 	renderables := make(canvas2drendering.Renderables, len(state.personQueue.persons))
 	for i, person := range state.personQueue.persons {
 		renderables[i] = state.spriteFactory.create("person_"+person.Type, int(person.x), personRenderY, 0)
+	}
+	for _, index := range state.selectedCheatTargets {
+		p := state.personQueue.persons[index]
+		renderables = append(
+			renderables,
+			state.spriteFactory.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
+		)
 	}
 	return renderables
 }
@@ -31,11 +40,17 @@ func (queue *personQueue) Tick(ms int) {
 	}
 }
 
+func (queue *personQueue) addPerson(p person) {
+	queue.persons = append([]person{p}, queue.persons...)
+}
+
 type person struct {
 	Type string
 
 	x        float64
 	desiredX float64
+
+	selectionAnimation animation.Frames
 }
 
 func (p person) bounds() rectangle {
@@ -48,6 +63,7 @@ func (p person) bounds() rectangle {
 }
 
 func (p *person) Tick(ms int) {
+	p.selectionAnimation.Tick(ms)
 	speed := personSpeed * (float64(ms) / 1000)
 	if math.Abs(p.x-p.desiredX) <= speed {
 		p.x = p.desiredX
@@ -72,6 +88,39 @@ const (
 	// personSpeed is the speed of a person in pixel per second.
 	personSpeed = 25
 )
+
+func (state *statePlaying) addRandomPerson(x float64) {
+	ids := make([]string, 0)
+	for id := range allPersonTypes {
+		if id != personTypePlayer {
+			ids = append(ids, id)
+		}
+	}
+	typ := ids[rand.Intn(len(ids))]
+
+	state.addPerson(
+		person{
+			Type:               typ,
+			x:                  x,
+			selectionAnimation: animation.NewFrames(3, 49),
+		},
+	)
+}
+
+func (state *statePlaying) addPlayer(x float64) {
+	state.addPerson(
+		person{
+			Type:               personTypePlayer,
+			x:                  x,
+			selectionAnimation: animation.NewFrames(3, 49),
+		},
+	)
+}
+
+func (state *statePlaying) addPerson(p person) {
+	state.personQueue.addPerson(p)
+	state.personQueue.calculateDesiredX()
+}
 
 type personType struct {
 	tags []string
