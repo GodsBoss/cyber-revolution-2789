@@ -21,8 +21,8 @@ func (state *statePlaying) init() {
 	state.data.addPlayer(140)
 	state.data.addRandomPerson(100)
 
-	state.addRandomCheat()
-	state.addRandomCheat()
+	state.data.addRandomCheat()
+	state.data.addRandomCheat()
 }
 
 func (state *statePlaying) tick(ms int) (next string) {
@@ -66,10 +66,6 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 	renderables = append(renderables, state.data.rendered(state.spriteFactory)...)
 
 	return renderables
-}
-
-func (state *statePlaying) addRandomCheat() {
-	state.data.addRandomCheat()
 }
 
 func (state *statePlaying) unselectCheat() {
