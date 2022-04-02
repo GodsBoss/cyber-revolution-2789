@@ -24,5 +24,5 @@ func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next
 }
 
 func (state *statePlaying) renderable() canvas2drendering.Renderable {
-	return canvas2drendering.NopRenderable()
+	return background
 }
