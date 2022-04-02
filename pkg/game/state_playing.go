@@ -165,7 +165,7 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 }
 
 func (state *statePlaying) cheatCoords(index int) (x int, y int) {
-	return state.cheatCoords(index)
+	return state.data.cheatCoords(index)
 }
 
 func (state *statePlaying) renderedPersons() canvas2drendering.Renderables {
