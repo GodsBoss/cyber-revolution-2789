@@ -75,6 +75,12 @@ func (data *playingData) addPerson(p person) {
 	data.personQueue.addPerson(p)
 }
 
+func (data *playingData) rendered(sf *spriteFactory) canvas2drendering.Renderables {
+	renderables := data.renderedPersons(sf)
+	renderables = append(renderables, data.renderedCheats(sf)...)
+	return renderables
+}
+
 func (data *playingData) renderedPersons(sf *spriteFactory) canvas2drendering.Renderables {
 	renderables := make(canvas2drendering.Renderables, len(data.personQueue.persons))
 	for i, person := range data.personQueue.persons {

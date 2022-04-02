@@ -65,8 +65,7 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
-	renderables = append(renderables, state.data.renderedPersons(state.spriteFactory)...)
-	renderables = append(renderables, state.data.renderedCheats(state.spriteFactory)...)
+	renderables = append(renderables, state.data.rendered(state.spriteFactory)...)
 
 	return renderables
 }
