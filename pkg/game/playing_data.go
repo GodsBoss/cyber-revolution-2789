@@ -113,9 +113,9 @@ func (data *playingData) addPerson(p person) {
 	data.personQueue.addPerson(p)
 }
 
-func (data *playingData) rendered(sf *spriteFactory) canvas2drendering.Renderables {
+func (data *playingData) rendered(sf *spriteFactory, includeMarkers bool) canvas2drendering.Renderables {
 	renderables := data.renderedPersons(sf)
-	renderables = append(renderables, data.renderedCheats(sf)...)
+	renderables = append(renderables, data.renderedCheats(sf, includeMarkers)...)
 	return renderables
 }
 
@@ -149,7 +149,7 @@ func (data *playingData) renderedPersons(sf *spriteFactory) canvas2drendering.Re
 	return renderables
 }
 
-func (data *playingData) renderedCheats(sf *spriteFactory) canvas2drendering.Renderables {
+func (data *playingData) renderedCheats(sf *spriteFactory, includeMarkers bool) canvas2drendering.Renderables {
 	l := len(data.cheats.availableCheats)
 
 	renderables := make(canvas2drendering.Renderables, l)
@@ -160,12 +160,12 @@ func (data *playingData) renderedCheats(sf *spriteFactory) canvas2drendering.Ren
 		renderables[i] = sf.create(cheat.SpriteID(), x, y, 0)
 
 		// If no cheat is selected, highlight all cheats as possible user interactions.
-		if data.isNoCheatSelected() {
+		if data.isNoCheatSelected() && includeMarkers {
 			renderables = append(renderables, sf.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
 		}
 	}
 
-	if data.areAllTargetsSelected() {
+	if data.areAllTargetsSelected() && includeMarkers {
 		x, y := data.cheatCoords(data.cheats.selectedCheat)
 		renderables = append(
 			renderables,

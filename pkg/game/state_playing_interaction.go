@@ -52,7 +52,7 @@ func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable 
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
-	renderables = append(renderables, state.data.rendered(state.spriteFactory)...)
+	renderables = append(renderables, state.data.rendered(state.spriteFactory, true)...)
 
 	return renderables
 }
