@@ -1,5 +1,7 @@
 package game
 
+import "github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
+
 type playingData struct {
 	personQueue personQueue
 	cheats      cheats
@@ -71,4 +73,34 @@ func (data *playingData) tryActivateCheat(x int, y int) {
 
 func (data *playingData) addPerson(p person) {
 	data.personQueue.addPerson(p)
+}
+
+func (data *playingData) renderedPersons(sf *spriteFactory) canvas2drendering.Renderables {
+	renderables := make(canvas2drendering.Renderables, len(data.personQueue.persons))
+	for i, person := range data.personQueue.persons {
+		renderables[i] = sf.create("person_"+person.Type, int(person.x), personRenderY, 0)
+	}
+	for _, index := range data.cheats.selectedCheatTargets {
+		p := data.personQueue.persons[index]
+		renderables = append(
+			renderables,
+			sf.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
+		)
+	}
+	if !data.isNoCheatSelected() {
+		necessaryTargets := allCheats[data.cheats.availableCheats[data.cheats.selectedCheat].id].targets
+		if len(necessaryTargets) > len(data.cheats.selectedCheatTargets) {
+			nextTarget := necessaryTargets[len(data.cheats.selectedCheatTargets)]
+
+			for i, p := range data.personQueue.persons {
+				if nextTarget.isValidTarget(data.personQueue, i, data.cheats.selectedCheatTargets) {
+					renderables = append(
+						renderables,
+						sf.create("person_marker", int(p.x), personRenderY, p.markerAnimation.Frame()),
+					)
+				}
+			}
+		}
+	}
+	return renderables
 }

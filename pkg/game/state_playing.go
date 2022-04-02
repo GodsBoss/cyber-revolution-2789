@@ -65,7 +65,7 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
-	renderables = append(renderables, state.renderedPersons()...)
+	renderables = append(renderables, state.data.renderedPersons(state.spriteFactory)...)
 	renderables = append(renderables, state.renderedCheats()...)
 
 	return renderables
@@ -112,36 +112,6 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 
 func (state *statePlaying) cheatCoords(index int) (x int, y int) {
 	return state.data.cheatCoords(index)
-}
-
-func (state *statePlaying) renderedPersons() canvas2drendering.Renderables {
-	renderables := make(canvas2drendering.Renderables, len(state.data.personQueue.persons))
-	for i, person := range state.data.personQueue.persons {
-		renderables[i] = state.spriteFactory.create("person_"+person.Type, int(person.x), personRenderY, 0)
-	}
-	for _, index := range state.data.cheats.selectedCheatTargets {
-		p := state.data.personQueue.persons[index]
-		renderables = append(
-			renderables,
-			state.spriteFactory.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
-		)
-	}
-	if !state.data.isNoCheatSelected() {
-		necessaryTargets := allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets
-		if len(necessaryTargets) > len(state.data.cheats.selectedCheatTargets) {
-			nextTarget := necessaryTargets[len(state.data.cheats.selectedCheatTargets)]
-
-			for i, p := range state.data.personQueue.persons {
-				if nextTarget.isValidTarget(state.data.personQueue, i, state.data.cheats.selectedCheatTargets) {
-					renderables = append(
-						renderables,
-						state.spriteFactory.create("person_marker", int(p.x), personRenderY, p.markerAnimation.Frame()),
-					)
-				}
-			}
-		}
-	}
-	return renderables
 }
 
 func (state *statePlaying) addRandomPerson(x float64) {
