@@ -26,11 +26,7 @@ func (state *statePlaying) init() {
 }
 
 func (state *statePlaying) tick(ms int) (next string) {
-	state.data.personQueue.Tick(ms)
-
-	for i := range state.data.cheats.availableCheats {
-		state.data.cheats.availableCheats[i].markerAnimation.Tick(ms)
-	}
+	state.data.tick(ms)
 
 	return ""
 }

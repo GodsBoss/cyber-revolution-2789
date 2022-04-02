@@ -14,3 +14,8 @@ func (data *playingData) init() {
 func (data *playingData) unselectCheat() {
 	data.cheats.unselectCheat()
 }
+
+func (data *playingData) tick(ms int) {
+	data.personQueue.Tick(ms)
+	data.cheats.tick(ms)
+}

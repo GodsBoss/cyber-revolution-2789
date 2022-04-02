@@ -29,6 +29,12 @@ func (chs *cheats) unselectCheat() {
 	chs.selectedCheatTargets = nil
 }
 
+func (chs *cheats) tick(ms int) {
+	for i := range chs.availableCheats {
+		chs.availableCheats[i].markerAnimation.Tick(ms)
+	}
+}
+
 func (state *statePlaying) addRandomCheat() {
 	cheatIDs := make([]string, 0)
 	for id := range allCheats {
