@@ -1,8 +1,6 @@
 package game
 
 import (
-	"fmt"
-
 	"github.com/GodsBoss/cyber-revolution-2789/pkg/scale"
 	"github.com/GodsBoss/gggg/pkg/dom"
 	"github.com/GodsBoss/gggg/pkg/dominit"
@@ -61,7 +59,6 @@ func (g *game) SetOutput(ctx2d *dom.Context2D) {
 
 func (g *game) Scale(availableWidth, availableHeight int) (realWidth, realHeight int, scaleX, scaleY float64) {
 	rw, rh, s := g.scaler.Scale(availableWidth, availableHeight)
-	fmt.Println(rw, rh, s)
 	return rw, rh, s, s
 }
 
