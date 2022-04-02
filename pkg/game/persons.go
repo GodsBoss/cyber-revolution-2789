@@ -115,7 +115,7 @@ const (
 	personTypeGreenAlien = "green_alien"
 
 	personRenderY            = 80
-	personHorizontalDistance = 40
+	personHorizontalDistance = 30
 
 	// personMostRightX is the x position the most right person desires.
 	personMostRightX = 260
