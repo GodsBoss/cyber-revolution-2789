@@ -81,32 +81,7 @@ func (state *statePlaying) unselectCheat() {
 }
 
 func (state *statePlaying) tryActivateCheat(x int, y int) {
-	cheatX, cheatY := state.cheatCoords(state.data.cheats.selectedCheat)
-
-	cheatBounds := rectangle{
-		x:      cheatX,
-		y:      cheatY,
-		width:  cheatWidth,
-		height: cheatHeight,
-	}
-
-	if !cheatBounds.withinBounds(x, y) {
-		return
-	}
-
-	allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].invoke(&state.data.personQueue, state.data.cheats.selectedCheatTargets)
-
-	// Cheat has been used, remove it.
-	state.data.cheats.availableCheats = append(
-		state.data.cheats.availableCheats[0:state.data.cheats.selectedCheat],
-		state.data.cheats.availableCheats[state.data.cheats.selectedCheat+1:]...,
-	)
-	state.unselectCheat()
-
-	// Person queue probably changed, recalculate.
-	state.data.personQueue.calculateDesiredX()
-
-	state.addRandomCheat()
+	state.data.tryActivateCheat(x, y)
 }
 
 func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {

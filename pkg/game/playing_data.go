@@ -39,3 +39,32 @@ func (data *playingData) trySelectCheat(x int, y int) {
 func (data *playingData) addRandomCheat() {
 	data.cheats.addRandomCheat()
 }
+
+func (data *playingData) tryActivateCheat(x int, y int) {
+	cheatX, cheatY := data.cheatCoords(data.cheats.selectedCheat)
+
+	cheatBounds := rectangle{
+		x:      cheatX,
+		y:      cheatY,
+		width:  cheatWidth,
+		height: cheatHeight,
+	}
+
+	if !cheatBounds.withinBounds(x, y) {
+		return
+	}
+
+	allCheats[data.cheats.availableCheats[data.cheats.selectedCheat].id].invoke(&data.personQueue, data.cheats.selectedCheatTargets)
+
+	// Cheat has been used, remove it.
+	data.cheats.availableCheats = append(
+		data.cheats.availableCheats[0:data.cheats.selectedCheat],
+		data.cheats.availableCheats[data.cheats.selectedCheat+1:]...,
+	)
+	data.unselectCheat()
+
+	// Person queue probably changed, recalculate.
+	data.personQueue.calculateDesiredX()
+
+	data.addRandomCheat()
+}
