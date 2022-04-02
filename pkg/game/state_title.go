@@ -28,7 +28,7 @@ func (state *stateTitle) receiveMouseEvent(event interaction.MouseEvent) (next s
 		state.hoverPlay = playButton.withinBounds(event.X, event.Y)
 	}
 	if event.Type == interaction.MouseUp && state.hoverPlay {
-		return statePlayingID
+		return statePlayingStartID
 	}
 	return ""
 }

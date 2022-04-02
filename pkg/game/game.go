@@ -20,6 +20,7 @@ func New(img *dom.Image) dominit.Game {
 		scaler: sc,
 		infos:  dataSprites,
 	}
+	playingData := &playingData{}
 
 	return &game{
 		img:    img,
@@ -32,8 +33,13 @@ func New(img *dom.Image) dominit.Game {
 				stateGameOverID: &stateGameOver{
 					spriteFactory: sf,
 				},
+				statePlayingStartID: &statePlayingStart{
+					spriteFactory: sf,
+					data:          playingData,
+				},
 				statePlayingID: &statePlaying{
 					spriteFactory: sf,
+					data:          playingData,
 				},
 			},
 			currentStateID: stateTitleID,

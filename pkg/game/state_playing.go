@@ -13,17 +13,7 @@ type statePlaying struct {
 	data *playingData
 }
 
-func (state *statePlaying) init() {
-	state.data = &playingData{}
-	state.data.init()
-
-	state.data.addRandomPerson(180)
-	state.data.addPlayer(140)
-	state.data.addRandomPerson(100)
-
-	state.data.addRandomCheat()
-	state.data.addRandomCheat()
-}
+func (state *statePlaying) init() {}
 
 func (state *statePlaying) tick(ms int) (next string) {
 	state.data.tick(ms)
