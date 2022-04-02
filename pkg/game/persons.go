@@ -72,3 +72,12 @@ const (
 	// personSpeed is the speed of a person in pixel per second.
 	personSpeed = 25
 )
+
+type personType struct {
+	tags []string
+}
+
+var allPersonTypes = map[string]personType{
+	personTypeGreenAlien: {},
+	personTypePlayer:     {},
+}

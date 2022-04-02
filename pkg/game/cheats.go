@@ -177,6 +177,18 @@ func (target cheatTargetNotTargeted) isValidTarget(_ *personQueue, index int, cu
 	return true
 }
 
+type cheatTargetHasTag string
+
+func (target cheatTargetHasTag) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+	targetTags := allPersonTypes[queue.persons[index].Type].tags
+	for _, tag := range targetTags {
+		if tag == string(target) {
+			return true
+		}
+	}
+	return false
+}
+
 var allCheats = map[string]cheatAction{
 	cheatIDLeftMost: {
 		invoke: func(queue *personQueue, _ []int) {
