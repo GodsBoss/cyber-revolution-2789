@@ -19,3 +19,7 @@ func (data *playingData) tick(ms int) {
 	data.personQueue.Tick(ms)
 	data.cheats.tick(ms)
 }
+
+func (data *playingData) isNoCheatSelected() bool {
+	return data.cheats.isNoCheatSelected()
+}

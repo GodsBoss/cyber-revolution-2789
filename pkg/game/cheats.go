@@ -35,6 +35,10 @@ func (chs *cheats) tick(ms int) {
 	}
 }
 
+func (chs *cheats) isNoCheatSelected() bool {
+	return chs.selectedCheat == noCheatSelected
+}
+
 func (state *statePlaying) addRandomCheat() {
 	cheatIDs := make([]string, 0)
 	for id := range allCheats {
@@ -121,12 +125,12 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 		renderables[i] = state.spriteFactory.create(cheat.SpriteID(), x, y, 0)
 
 		// If no cheat is selected, highlight all cheats as possible user interactions.
-		if state.data.cheats.selectedCheat == noCheatSelected {
+		if state.data.isNoCheatSelected() {
 			renderables = append(renderables, state.spriteFactory.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
 		}
 	}
 
-	if state.data.cheats.selectedCheat != noCheatSelected && len(allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets) == len(state.data.cheats.selectedCheatTargets) {
+	if !state.data.isNoCheatSelected() && len(allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets) == len(state.data.cheats.selectedCheatTargets) {
 		x, y := state.cheatCoords(state.data.cheats.selectedCheat)
 		renderables = append(
 			renderables,

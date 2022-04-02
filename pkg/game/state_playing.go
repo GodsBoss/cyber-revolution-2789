@@ -41,7 +41,7 @@ func (state *statePlaying) receiveKeyEvent(event interaction.KeyEvent) (next str
 func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next string) {
 	if event.Type == interaction.MouseUp {
 		// No cheat selected yet, so try to select one.
-		if state.data.cheats.selectedCheat == noCheatSelected {
+		if state.data.isNoCheatSelected() {
 			state.trySelectCheat(event.X, event.Y)
 			return ""
 		}

@@ -20,7 +20,7 @@ func (state *statePlaying) renderedPersons() canvas2drendering.Renderables {
 			state.spriteFactory.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
 		)
 	}
-	if state.data.cheats.selectedCheat != noCheatSelected {
+	if !state.data.isNoCheatSelected() {
 		necessaryTargets := allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets
 		if len(necessaryTargets) > len(state.data.cheats.selectedCheatTargets) {
 			nextTarget := necessaryTargets[len(state.data.cheats.selectedCheatTargets)]
