@@ -16,6 +16,14 @@ func New(img *dom.Image) dominit.Game {
 			HorizontalMargin: 20,
 			VerticalMargin:   20,
 		},
+		states: &states{
+			states: map[string]state{
+				stateTitleID:    &stateTitle{},
+				stateGameOverID: &stateGameOver{},
+				statePlayingID:  &statePlaying{},
+			},
+			currentStateID: stateTitleID,
+		},
 	}
 }
 
@@ -23,4 +31,5 @@ type game struct {
 	img    *dom.Image
 	ctx2d  *dom.Context2D
 	scaler scaler
+	states *states
 }
