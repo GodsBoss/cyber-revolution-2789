@@ -53,7 +53,7 @@ func New(img *dom.Image) dominit.Game {
 					spriteFactory: sf,
 					data:          playingData,
 				},
-				statePlayingSpawnPersonID: &statePlayingSpawnPerson{
+				statePlayingReplenishID: &statePlayingReplenish{
 					spriteFactory: sf,
 					data:          playingData,
 				},

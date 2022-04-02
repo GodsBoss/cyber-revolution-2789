@@ -27,7 +27,7 @@ func (state *statePlayingKill) tick(ms int) (next string) {
 		state.data.removeMostRightPerson()
 
 		if state.data.isPlayerAlive() {
-			return statePlayingSpawnPersonID
+			return statePlayingReplenishID
 		}
 
 		return statePlayingDeadID

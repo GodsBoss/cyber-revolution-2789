@@ -6,9 +6,9 @@ import (
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
-const statePlayingSpawnPersonID = "playing_spawn_person"
+const statePlayingReplenishID = "playing_replenish"
 
-type statePlayingSpawnPerson struct {
+type statePlayingReplenish struct {
 	spriteFactory *spriteFactory
 
 	data *playingData
@@ -18,14 +18,14 @@ type statePlayingSpawnPerson struct {
 	beamAnimation animation.Frames
 }
 
-func (state *statePlayingSpawnPerson) init() {
+func (state *statePlayingReplenish) init() {
 	state.beamState = beamStates[0]
 	state.nextBeamState = beamStateSwitchInterval
 	state.beamAnimation = animation.NewFrames(3, 75)
 	state.beamAnimation.Randomize()
 }
 
-func (state *statePlayingSpawnPerson) tick(ms int) (next string) {
+func (state *statePlayingReplenish) tick(ms int) (next string) {
 	state.data.tick(ms)
 	state.beamAnimation.Tick(ms)
 
@@ -51,15 +51,15 @@ func (state *statePlayingSpawnPerson) tick(ms int) (next string) {
 	return ""
 }
 
-func (state *statePlayingSpawnPerson) receiveKeyEvent(event interaction.KeyEvent) (next string) {
+func (state *statePlayingReplenish) receiveKeyEvent(event interaction.KeyEvent) (next string) {
 	return ""
 }
 
-func (state *statePlayingSpawnPerson) receiveMouseEvent(event interaction.MouseEvent) (next string) {
+func (state *statePlayingReplenish) receiveMouseEvent(event interaction.MouseEvent) (next string) {
 	return ""
 }
 
-func (state *statePlayingSpawnPerson) renderable() canvas2drendering.Renderable {
+func (state *statePlayingReplenish) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
