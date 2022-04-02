@@ -7,7 +7,9 @@ import (
 
 const stateTitleID = "title"
 
-type stateTitle struct{}
+type stateTitle struct {
+	spriteFactory *spriteFactory
+}
 
 func (state *stateTitle) init() {}
 
@@ -24,5 +26,5 @@ func (state *stateTitle) receiveMouseEvent(event interaction.MouseEvent) (next s
 }
 
 func (state *stateTitle) renderable() canvas2drendering.Renderable {
-	return background
+	return state.spriteFactory.create("background", 0, 0, 0)
 }

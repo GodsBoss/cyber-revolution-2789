@@ -7,7 +7,9 @@ import (
 
 const stateGameOverID = "game_over"
 
-type stateGameOver struct{}
+type stateGameOver struct {
+	spriteFactory *spriteFactory
+}
 
 func (state *stateGameOver) init() {}
 

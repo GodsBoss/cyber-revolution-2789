@@ -9,19 +9,32 @@ import (
 
 // New creates and initializes a new game.
 func New(img *dom.Image) dominit.Game {
+	sc := &scale.ByInteger{
+		UnscaledWidth:    320,
+		UnscaledHeight:   200,
+		HorizontalMargin: 20,
+		VerticalMargin:   20,
+	}
+	sf := &spriteFactory{
+		source: img,
+		scaler: sc,
+		infos:  dataSprites,
+	}
+
 	return &game{
-		img: img,
-		scaler: &scale.ByInteger{
-			UnscaledWidth:    320,
-			UnscaledHeight:   200,
-			HorizontalMargin: 20,
-			VerticalMargin:   20,
-		},
+		img:    img,
+		scaler: sc,
 		states: &states{
 			states: map[string]state{
-				stateTitleID:    &stateTitle{},
-				stateGameOverID: &stateGameOver{},
-				statePlayingID:  &statePlaying{},
+				stateTitleID: &stateTitle{
+					spriteFactory: sf,
+				},
+				stateGameOverID: &stateGameOver{
+					spriteFactory: sf,
+				},
+				statePlayingID: &statePlaying{
+					spriteFactory: sf,
+				},
 			},
 			currentStateID: stateTitleID,
 		},
