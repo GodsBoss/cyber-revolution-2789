@@ -189,6 +189,36 @@ func (target cheatTargetHasTag) isValidTarget(queue *personQueue, index int, cur
 	return false
 }
 
+type cheatTargetNot struct {
+	target cheatTarget
+}
+
+func (target cheatTargetNot) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+	return !target.target.isValidTarget(queue, index, currentTargets)
+}
+
+type cheatTargetAnd []cheatTarget
+
+func (target cheatTargetAnd) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+	for _, t := range target {
+		if !t.isValidTarget(queue, index, currentTargets) {
+			return false
+		}
+	}
+	return true
+}
+
+type cheatTargetOr []cheatTarget
+
+func (target cheatTargetOr) isValidTarget(queue *personQueue, index int, currentTargets []int) bool {
+	for _, t := range target {
+		if t.isValidTarget(queue, index, currentTargets) {
+			return true
+		}
+	}
+	return false
+}
+
 var allCheats = map[string]cheatAction{
 	cheatIDLeftMost: {
 		invoke: func(queue *personQueue, _ []int) {
