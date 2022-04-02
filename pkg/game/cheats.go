@@ -18,6 +18,11 @@ type cheats struct {
 	selectedCheatTargets []int
 }
 
+func (chs *cheats) unselectCheat() {
+	chs.selectedCheat = noCheatSelected
+	chs.selectedCheatTargets = nil
+}
+
 func (state *statePlaying) addRandomCheat() {
 	cheatIDs := make([]string, 0)
 	for id := range allCheats {
@@ -33,8 +38,7 @@ func (state *statePlaying) addRandomCheat() {
 }
 
 func (state *statePlaying) unselectCheat() {
-	state.data.cheats.selectedCheat = noCheatSelected
-	state.data.cheats.selectedCheatTargets = nil
+	state.data.unselectCheat()
 }
 
 func (state *statePlaying) trySelectCheat(x int, y int) {

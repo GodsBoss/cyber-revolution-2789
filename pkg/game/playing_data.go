@@ -16,3 +16,7 @@ func (data *playingData) init() {
 		selectedCheatTargets: nil,
 	}
 }
+
+func (data *playingData) unselectCheat() {
+	data.cheats.unselectCheat()
+}
