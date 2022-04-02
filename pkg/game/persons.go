@@ -37,6 +37,15 @@ func (queue *personQueue) addPerson(p person) {
 	queue.calculateDesiredX()
 }
 
+func (queue personQueue) isAnyPersonMoving() bool {
+	for _, p := range queue.persons {
+		if p.isMoving() {
+			return true
+		}
+	}
+	return false
+}
+
 type person struct {
 	Type string
 
@@ -45,6 +54,8 @@ type person struct {
 
 	markerAnimation    animation.Frames
 	selectionAnimation animation.Frames
+
+	moving bool
 }
 
 func (p person) spriteID() string {
@@ -66,12 +77,18 @@ func (p *person) Tick(ms int) {
 	speed := personSpeed * (float64(ms) / 1000)
 	if math.Abs(p.x-p.desiredX) <= speed {
 		p.x = p.desiredX
+		p.moving = false
 		return
 	}
 	if p.desiredX < p.x {
 		speed = -speed
 	}
 	p.x += speed
+	p.moving = true
+}
+
+func (p person) isMoving() bool {
+	return p.moving
 }
 
 const (

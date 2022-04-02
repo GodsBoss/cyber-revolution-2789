@@ -167,3 +167,7 @@ func (data *playingData) renderedCheats(sf *spriteFactory) canvas2drendering.Ren
 
 	return renderables
 }
+
+func (data *playingData) isAnyPersonMoving() bool {
+	return data.personQueue.isAnyPersonMoving()
+}

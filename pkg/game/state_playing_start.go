@@ -61,7 +61,7 @@ func (state *statePlayingStart) tick(ms int) (next string) {
 		state.remainingCheats--
 	}
 
-	if len(state.remainingPersons) == 0 && state.remainingCheats == 0 {
+	if len(state.remainingPersons) == 0 && state.remainingCheats == 0 && !state.data.isAnyPersonMoving() {
 		return statePlayingInteractionID
 	}
 
