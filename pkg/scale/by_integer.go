@@ -6,14 +6,17 @@ type ByInteger struct {
 
 	HorizontalMargin int
 	VerticalMargin   int
+
+	scale int
 }
 
-func (byInteger ByInteger) Scale(availableWidth, availableHeight int) (realWidth, realHeight int, scale float64) {
-	if byInteger.UnscaledWidth <= 0 || byInteger.UnscaledHeight <= 0 {
-		return 0, 0, 1
-	}
+func (byInteger *ByInteger) Scale() int {
+	return byInteger.scale
+}
 
-	wf, hf := (availableWidth-byInteger.HorizontalMargin)/byInteger.UnscaledWidth, (availableHeight-byInteger.VerticalMargin)/byInteger.UnscaledHeight
+func (byInteger *ByInteger) Recalculate(availableWidth, availableHeight int) {
+	wf := (availableWidth - byInteger.HorizontalMargin) / byInteger.UnscaledWidth
+	hf := (availableHeight - byInteger.VerticalMargin) / byInteger.UnscaledHeight
 
 	f := wf
 	if hf < f {
@@ -23,5 +26,9 @@ func (byInteger ByInteger) Scale(availableWidth, availableHeight int) (realWidth
 		f = 1
 	}
 
-	return byInteger.UnscaledWidth * f, byInteger.UnscaledHeight * f, float64(f)
+	byInteger.scale = f
+}
+
+func (byInteger *ByInteger) RealSize() (realWidth, realHeight int) {
+	return byInteger.UnscaledWidth * byInteger.scale, byInteger.UnscaledHeight * byInteger.scale
 }

@@ -11,7 +11,7 @@ import (
 func New(img *dom.Image) dominit.Game {
 	return &game{
 		img: img,
-		scaler: scale.ByInteger{
+		scaler: &scale.ByInteger{
 			UnscaledWidth:    320,
 			UnscaledHeight:   200,
 			HorizontalMargin: 20,
@@ -58,12 +58,18 @@ func (g *game) SetOutput(ctx2d *dom.Context2D) {
 }
 
 func (g *game) Scale(availableWidth, availableHeight int) (realWidth, realHeight int, scaleX, scaleY float64) {
-	rw, rh, s := g.scaler.Scale(availableWidth, availableHeight)
+	g.scaler.Recalculate(availableWidth, availableHeight)
+
+	rw, rh := g.scaler.RealSize()
+	s := float64(g.scaler.Scale())
+
 	return rw, rh, s, s
 }
 
 type scaler interface {
-	Scale(availableWidth, availableHeight int) (realWidth, realHeight int, scale float64)
+	Scale() int
+	Recalculate(availableWidth, availableHeight int)
+	RealSize() (realWidth, realHeight int)
 }
 
 func (g *game) Render() {
