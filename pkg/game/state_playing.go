@@ -13,6 +13,13 @@ type statePlaying struct {
 	spriteFactory *spriteFactory
 
 	personQueue *personQueue
+	cheats      []cheat
+
+	// selectedCheat is the index of the chosen cheat. Contains -1 if no cheat is selected.
+	selectedCheat int
+
+	// selectedCheatTargets are the indexes of the chosen cheat targets.
+	selectedCheatTargets []int
 }
 
 func (state *statePlaying) init() {
@@ -33,6 +40,11 @@ func (state *statePlaying) init() {
 		},
 	}
 	state.personQueue.calculateDesiredX()
+
+	state.selectedCheat = noCheatSelected
+	state.cheats = make([]cheat, 0)
+	state.addRandomCheat()
+	state.addRandomCheat()
 }
 
 func (state *statePlaying) tick(ms int) (next string) {
@@ -41,10 +53,30 @@ func (state *statePlaying) tick(ms int) (next string) {
 }
 
 func (state *statePlaying) receiveKeyEvent(event interaction.KeyEvent) (next string) {
+	if event.Type == interaction.KeyUp && event.Key == "Escape" {
+		state.unselectCheat()
+	}
 	return ""
 }
 
 func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next string) {
+	if event.Type == interaction.MouseUp {
+		// No cheat selected yet, so try to select one.
+		if state.selectedCheat == noCheatSelected {
+			state.trySelectCheat(event.X, event.Y)
+			return ""
+		}
+
+		// All cheat targets are selected, try to activate cheat.
+		if len(state.selectedCheatTargets) == len(allCheats[state.cheats[state.selectedCheat].id].targets) {
+			state.tryActivateCheat(event.X, event.Y)
+			return ""
+		}
+
+		// Try to select target.
+		state.trySelectTarget(event.X, event.Y)
+	}
+
 	return ""
 }
 
@@ -53,6 +85,7 @@ func (state *statePlaying) renderable() canvas2drendering.Renderable {
 		state.spriteFactory.create("background", 0, 0, 0),
 	}
 	renderables = append(renderables, state.persons()...)
+	renderables = append(renderables, state.renderedCheats()...)
 
 	return renderables
 }
@@ -87,6 +120,15 @@ type person struct {
 
 	x        float64
 	desiredX float64
+}
+
+func (p person) bounds() rectangle {
+	return rectangle{
+		x:      int(math.Floor(p.x)),
+		y:      personRenderY,
+		width:  32,
+		height: 48,
+	}
 }
 
 func (p *person) Tick(ms int) {
