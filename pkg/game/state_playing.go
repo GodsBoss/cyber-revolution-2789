@@ -14,17 +14,13 @@ type statePlaying struct {
 }
 
 func (state *statePlaying) init() {
-	state.data = &playingData{
-		personQueue: &personQueue{
-			persons: make([]person, 0),
-		},
-	}
+	state.data = &playingData{}
+	state.data.init()
+
 	state.addRandomPerson(180)
 	state.addPlayer(140)
 	state.addRandomPerson(100)
 
-	state.data.cheats.selectedCheat = noCheatSelected
-	state.data.cheats.availableCheats = make([]cheat, 0)
 	state.addRandomCheat()
 	state.addRandomCheat()
 }
