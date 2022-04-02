@@ -25,6 +25,12 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
+	"person_marker": {
+		X: 301,
+		Y: 134,
+		W: 32,
+		H: 48,
+	},
 	"person_selection": {
 		X: 301,
 		Y: 82,

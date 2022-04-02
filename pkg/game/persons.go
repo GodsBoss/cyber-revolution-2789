@@ -20,6 +20,21 @@ func (state *statePlaying) persons() canvas2drendering.Renderables {
 			state.spriteFactory.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
 		)
 	}
+	if state.selectedCheat != noCheatSelected {
+		necessaryTargets := allCheats[state.cheats[state.selectedCheat].id].targets
+		if len(necessaryTargets) > len(state.selectedCheatTargets) {
+			nextTarget := necessaryTargets[len(state.selectedCheatTargets)]
+
+			for i, p := range state.personQueue.persons {
+				if nextTarget.isValidTarget(state.personQueue, i, state.selectedCheatTargets) {
+					renderables = append(
+						renderables,
+						state.spriteFactory.create("person_marker", int(p.x), personRenderY, p.markerAnimation.Frame()),
+					)
+				}
+			}
+		}
+	}
 	return renderables
 }
 
@@ -50,6 +65,7 @@ type person struct {
 	x        float64
 	desiredX float64
 
+	markerAnimation    animation.Frames
 	selectionAnimation animation.Frames
 }
 
@@ -64,6 +80,7 @@ func (p person) bounds() rectangle {
 
 func (p *person) Tick(ms int) {
 	p.selectionAnimation.Tick(ms)
+	p.markerAnimation.Tick(ms)
 	speed := personSpeed * (float64(ms) / 1000)
 	if math.Abs(p.x-p.desiredX) <= speed {
 		p.x = p.desiredX
@@ -100,9 +117,8 @@ func (state *statePlaying) addRandomPerson(x float64) {
 
 	state.addPerson(
 		person{
-			Type:               typ,
-			x:                  x,
-			selectionAnimation: animation.NewFrames(3, 49),
+			Type: typ,
+			x:    x,
 		},
 	)
 }
@@ -110,14 +126,18 @@ func (state *statePlaying) addRandomPerson(x float64) {
 func (state *statePlaying) addPlayer(x float64) {
 	state.addPerson(
 		person{
-			Type:               personTypePlayer,
-			x:                  x,
-			selectionAnimation: animation.NewFrames(3, 49),
+			Type: personTypePlayer,
+			x:    x,
 		},
 	)
 }
 
 func (state *statePlaying) addPerson(p person) {
+	p.markerAnimation = animation.NewFrames(3, 49)
+	p.markerAnimation.Randomize()
+	p.selectionAnimation = animation.NewFrames(3, 49)
+	p.selectionAnimation.Randomize()
+
 	state.personQueue.addPerson(p)
 	state.personQueue.calculateDesiredX()
 }
