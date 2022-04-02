@@ -36,6 +36,11 @@ func (state *statePlaying) init() {
 
 func (state *statePlaying) tick(ms int) (next string) {
 	state.personQueue.Tick(ms)
+
+	for i := range state.cheats {
+		state.cheats[i].markerAnimation.Tick(ms)
+	}
+
 	return ""
 }
 

@@ -37,7 +37,7 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
-	"cheat_border": {
+	"cheat_marker": {
 		X: 14,
 		Y: 154,
 		W: 30,

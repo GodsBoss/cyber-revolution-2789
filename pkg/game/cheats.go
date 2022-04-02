@@ -3,6 +3,7 @@ package game
 import (
 	"math/rand"
 
+	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
@@ -13,8 +14,10 @@ func (state *statePlaying) addRandomCheat() {
 	}
 	id := cheatIDs[rand.Intn(len(cheatIDs))]
 	newCheat := cheat{
-		id: id,
+		id:              id,
+		markerAnimation: animation.NewFrames(3, 80),
 	}
+	newCheat.markerAnimation.Randomize()
 	state.cheats = append(state.cheats, newCheat)
 }
 
@@ -73,6 +76,8 @@ const (
 
 type cheat struct {
 	id string
+
+	markerAnimation animation.Frames
 }
 
 func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
@@ -84,6 +89,11 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 		x, y := state.cheatCoords(i)
 
 		renderables[i] = state.spriteFactory.create(cheat.SpriteID(), x, y, 0)
+
+		// If no cheat is selected, highlight all cheats as possible user interactions.
+		if state.selectedCheat == noCheatSelected {
+			renderables = append(renderables, state.spriteFactory.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
+		}
 	}
 
 	return renderables
