@@ -86,5 +86,6 @@ type scaler interface {
 }
 
 func (g *game) Render() {
+	g.ctx2d.DisableImageSmoothing()
 	g.states.render(g.ctx2d)
 }
