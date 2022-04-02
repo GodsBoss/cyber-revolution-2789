@@ -9,24 +9,24 @@ import (
 )
 
 func (state *statePlaying) persons() canvas2drendering.Renderables {
-	renderables := make(canvas2drendering.Renderables, len(state.personQueue.persons))
-	for i, person := range state.personQueue.persons {
+	renderables := make(canvas2drendering.Renderables, len(state.data.personQueue.persons))
+	for i, person := range state.data.personQueue.persons {
 		renderables[i] = state.spriteFactory.create("person_"+person.Type, int(person.x), personRenderY, 0)
 	}
-	for _, index := range state.selectedCheatTargets {
-		p := state.personQueue.persons[index]
+	for _, index := range state.data.selectedCheatTargets {
+		p := state.data.personQueue.persons[index]
 		renderables = append(
 			renderables,
 			state.spriteFactory.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
 		)
 	}
-	if state.selectedCheat != noCheatSelected {
-		necessaryTargets := allCheats[state.cheats[state.selectedCheat].id].targets
-		if len(necessaryTargets) > len(state.selectedCheatTargets) {
-			nextTarget := necessaryTargets[len(state.selectedCheatTargets)]
+	if state.data.selectedCheat != noCheatSelected {
+		necessaryTargets := allCheats[state.data.cheats[state.data.selectedCheat].id].targets
+		if len(necessaryTargets) > len(state.data.selectedCheatTargets) {
+			nextTarget := necessaryTargets[len(state.data.selectedCheatTargets)]
 
-			for i, p := range state.personQueue.persons {
-				if nextTarget.isValidTarget(state.personQueue, i, state.selectedCheatTargets) {
+			for i, p := range state.data.personQueue.persons {
+				if nextTarget.isValidTarget(state.data.personQueue, i, state.data.selectedCheatTargets) {
 					renderables = append(
 						renderables,
 						state.spriteFactory.create("person_marker", int(p.x), personRenderY, p.markerAnimation.Frame()),
@@ -138,8 +138,8 @@ func (state *statePlaying) addPerson(p person) {
 	p.selectionAnimation = animation.NewFrames(3, 49)
 	p.selectionAnimation.Randomize()
 
-	state.personQueue.addPerson(p)
-	state.personQueue.calculateDesiredX()
+	state.data.personQueue.addPerson(p)
+	state.data.personQueue.calculateDesiredX()
 }
 
 type personType struct {

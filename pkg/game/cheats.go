@@ -18,16 +18,16 @@ func (state *statePlaying) addRandomCheat() {
 		markerAnimation: animation.NewFrames(3, 80),
 	}
 	newCheat.markerAnimation.Randomize()
-	state.cheats = append(state.cheats, newCheat)
+	state.data.cheats = append(state.data.cheats, newCheat)
 }
 
 func (state *statePlaying) unselectCheat() {
-	state.selectedCheat = noCheatSelected
-	state.selectedCheatTargets = nil
+	state.data.selectedCheat = noCheatSelected
+	state.data.selectedCheatTargets = nil
 }
 
 func (state *statePlaying) trySelectCheat(x int, y int) {
-	for i := range state.cheats {
+	for i := range state.data.cheats {
 		cheatX, cheatY := state.cheatCoords(i)
 
 		cheatBounds := rectangle{
@@ -38,14 +38,14 @@ func (state *statePlaying) trySelectCheat(x int, y int) {
 		}
 
 		if cheatBounds.withinBounds(x, y) {
-			state.selectedCheat = i
+			state.data.selectedCheat = i
 			return
 		}
 	}
 }
 
 func (state *statePlaying) tryActivateCheat(x int, y int) {
-	cheatX, cheatY := state.cheatCoords(state.selectedCheat)
+	cheatX, cheatY := state.cheatCoords(state.data.selectedCheat)
 
 	cheatBounds := rectangle{
 		x:      cheatX,
@@ -58,14 +58,14 @@ func (state *statePlaying) tryActivateCheat(x int, y int) {
 		return
 	}
 
-	allCheats[state.cheats[state.selectedCheat].id].invoke(state.personQueue, state.selectedCheatTargets)
+	allCheats[state.data.cheats[state.data.selectedCheat].id].invoke(state.data.personQueue, state.data.selectedCheatTargets)
 
 	// Cheat has been used, remove it.
-	state.cheats = append(state.cheats[0:state.selectedCheat], state.cheats[state.selectedCheat+1:]...)
+	state.data.cheats = append(state.data.cheats[0:state.data.selectedCheat], state.data.cheats[state.data.selectedCheat+1:]...)
 	state.unselectCheat()
 
 	// Person queue probably changed, recalculate.
-	state.personQueue.calculateDesiredX()
+	state.data.personQueue.calculateDesiredX()
 
 	state.addRandomCheat()
 }
@@ -81,26 +81,26 @@ type cheat struct {
 }
 
 func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
-	l := len(state.cheats)
+	l := len(state.data.cheats)
 
 	renderables := make(canvas2drendering.Renderables, l)
 
-	for i, cheat := range state.cheats {
+	for i, cheat := range state.data.cheats {
 		x, y := state.cheatCoords(i)
 
 		renderables[i] = state.spriteFactory.create(cheat.SpriteID(), x, y, 0)
 
 		// If no cheat is selected, highlight all cheats as possible user interactions.
-		if state.selectedCheat == noCheatSelected {
+		if state.data.selectedCheat == noCheatSelected {
 			renderables = append(renderables, state.spriteFactory.create("cheat_marker", x-3, y-3, cheat.markerAnimation.Frame()))
 		}
 	}
 
-	if state.selectedCheat != noCheatSelected && len(allCheats[state.cheats[state.selectedCheat].id].targets) == len(state.selectedCheatTargets) {
-		x, y := state.cheatCoords(state.selectedCheat)
+	if state.data.selectedCheat != noCheatSelected && len(allCheats[state.data.cheats[state.data.selectedCheat].id].targets) == len(state.data.selectedCheatTargets) {
+		x, y := state.cheatCoords(state.data.selectedCheat)
 		renderables = append(
 			renderables,
-			state.spriteFactory.create("cheat_marker", x-3, y-3, state.cheats[state.selectedCheat].markerAnimation.Frame()),
+			state.spriteFactory.create("cheat_marker", x-3, y-3, state.data.cheats[state.data.selectedCheat].markerAnimation.Frame()),
 		)
 	}
 
@@ -108,12 +108,12 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 }
 
 func (state *statePlaying) cheatCoords(index int) (x int, y int) {
-	l := len(state.cheats)
+	l := len(state.data.cheats)
 
 	x = cheatCenterX + cheatWidth*index - (cheatWidth*l)/2
 	y = cheatRenderY
 
-	if index == state.selectedCheat {
+	if index == state.data.selectedCheat {
 		y += cheatRenderYOffset
 	}
 
@@ -147,17 +147,17 @@ type cheatAction struct {
 }
 
 func (state *statePlaying) trySelectTarget(x int, y int) {
-	ch := allCheats[state.cheats[state.selectedCheat].id]
+	ch := allCheats[state.data.cheats[state.data.selectedCheat].id]
 	targetCandidates := make([]int, 0)
 
-	for index := range state.personQueue.persons {
+	for index := range state.data.personQueue.persons {
 		// Person wasn't clicked.
-		if !state.personQueue.persons[index].bounds().withinBounds(x, y) {
+		if !state.data.personQueue.persons[index].bounds().withinBounds(x, y) {
 			continue
 		}
 
 		// Person isn't a valid target.
-		if !ch.targets[len(state.selectedCheatTargets)].isValidTarget(state.personQueue, index, state.selectedCheatTargets) {
+		if !ch.targets[len(state.data.selectedCheatTargets)].isValidTarget(state.data.personQueue, index, state.data.selectedCheatTargets) {
 			continue
 		}
 
@@ -169,7 +169,7 @@ func (state *statePlaying) trySelectTarget(x int, y int) {
 		return
 	}
 
-	state.selectedCheatTargets = append(state.selectedCheatTargets, targetCandidates[0])
+	state.data.selectedCheatTargets = append(state.data.selectedCheatTargets, targetCandidates[0])
 }
 
 type cheatTarget interface {
