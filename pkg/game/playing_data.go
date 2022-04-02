@@ -79,8 +79,6 @@ func (data *playingData) activateCheat() {
 
 	// Person queue probably changed, recalculate.
 	data.personQueue.calculateDesiredX()
-
-	data.addRandomCheat()
 }
 
 func (data *playingData) addRandomPerson(x float64) {

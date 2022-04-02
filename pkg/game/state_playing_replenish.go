@@ -16,6 +16,9 @@ type statePlayingReplenish struct {
 	beamState     string
 	nextBeamState int
 	beamAnimation animation.Frames
+
+	remainingCheats int
+	nextCheat       int
 }
 
 func (state *statePlayingReplenish) init() {
@@ -23,13 +26,16 @@ func (state *statePlayingReplenish) init() {
 	state.nextBeamState = beamStateSwitchInterval
 	state.beamAnimation = animation.NewFrames(3, 75)
 	state.beamAnimation.Randomize()
+
+	state.remainingCheats = 1
+	state.nextCheat = 1000
 }
 
 func (state *statePlayingReplenish) tick(ms int) (next string) {
 	state.data.tick(ms)
 	state.beamAnimation.Tick(ms)
 
-	if state.beamState == "" && !state.data.isAnyPersonMoving() {
+	if state.beamState == "" && !state.data.isAnyPersonMoving() && state.remainingCheats == 0 {
 		return statePlayingInteractionID
 	}
 
@@ -46,6 +52,13 @@ func (state *statePlayingReplenish) tick(ms int) (next string) {
 		case beamStates[2]:
 			state.beamState = ""
 		}
+	}
+
+	state.nextCheat -= ms
+	if state.nextCheat <= 0 && state.remainingCheats > 0 {
+		state.nextCheat += 1000
+		state.remainingCheats--
+		state.data.addRandomCheat()
 	}
 
 	return ""
