@@ -8,7 +8,7 @@ import (
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
 
-func (state *statePlaying) persons() canvas2drendering.Renderables {
+func (state *statePlaying) renderedPersons() canvas2drendering.Renderables {
 	renderables := make(canvas2drendering.Renderables, len(state.data.personQueue.persons))
 	for i, person := range state.data.personQueue.persons {
 		renderables[i] = state.spriteFactory.create("person_"+person.Type, int(person.x), personRenderY, 0)
