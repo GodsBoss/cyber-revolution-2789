@@ -37,9 +37,8 @@ func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseE
 		}
 
 		// All cheat targets are selected, try to activate cheat.
-		if state.data.areAllTargetsSelected() {
-			state.tryActivateCheat(event.X, event.Y)
-			return ""
+		if state.data.isCheatActivationClick(event.X, event.Y) {
+			return statePlayingInvokeActionID
 		}
 
 		// Try to select target.
@@ -60,8 +59,4 @@ func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable 
 
 func (state *statePlayingInteraction) unselectCheat() {
 	state.data.unselectCheat()
-}
-
-func (state *statePlayingInteraction) tryActivateCheat(x int, y int) {
-	state.data.tryActivateCheat(x, y)
 }

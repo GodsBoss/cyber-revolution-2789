@@ -46,7 +46,11 @@ func (data *playingData) addRandomCheat() {
 	data.cheats.addRandomCheat()
 }
 
-func (data *playingData) tryActivateCheat(x int, y int) {
+func (data *playingData) isCheatActivationClick(x int, y int) bool {
+	if !data.areAllTargetsSelected() {
+		return false
+	}
+
 	cheatX, cheatY := data.cheatCoords(data.cheats.selectedCheat)
 
 	cheatBounds := rectangle{
@@ -57,9 +61,13 @@ func (data *playingData) tryActivateCheat(x int, y int) {
 	}
 
 	if !cheatBounds.withinBounds(x, y) {
-		return
+		return false
 	}
 
+	return true
+}
+
+func (data *playingData) activateCheat() {
 	allCheats[data.cheats.availableCheats[data.cheats.selectedCheat].id].invoke(&data.personQueue, data.cheats.selectedCheatTargets)
 
 	// Cheat has been used, remove it.

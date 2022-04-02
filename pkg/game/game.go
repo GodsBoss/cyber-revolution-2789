@@ -41,6 +41,10 @@ func New(img *dom.Image) dominit.Game {
 					spriteFactory: sf,
 					data:          playingData,
 				},
+				statePlayingInvokeActionID: &statePlayingInvokeAction{
+					spriteFactory: sf,
+					data:          playingData,
+				},
 			},
 			currentStateID: stateTitleID,
 		},
