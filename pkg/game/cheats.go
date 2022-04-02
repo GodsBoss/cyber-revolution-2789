@@ -142,12 +142,16 @@ func (state *statePlaying) renderedCheats() canvas2drendering.Renderables {
 }
 
 func (state *statePlaying) cheatCoords(index int) (x int, y int) {
-	l := len(state.data.cheats.availableCheats)
+	return state.cheatCoords(index)
+}
+
+func (chs *cheats) cheatCoords(index int) (x int, y int) {
+	l := len(chs.availableCheats)
 
 	x = cheatCenterX + cheatWidth*index - (cheatWidth*l)/2
 	y = cheatRenderY
 
-	if index == state.data.cheats.selectedCheat {
+	if index == chs.selectedCheat {
 		y += cheatRenderYOffset
 	}
 

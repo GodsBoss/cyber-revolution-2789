@@ -23,3 +23,7 @@ func (data *playingData) tick(ms int) {
 func (data *playingData) isNoCheatSelected() bool {
 	return data.cheats.isNoCheatSelected()
 }
+
+func (data *playingData) cheatCoords(index int) (x int, y int) {
+	return data.cheats.cheatCoords(index)
+}
