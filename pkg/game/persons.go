@@ -13,20 +13,20 @@ func (state *statePlaying) renderedPersons() canvas2drendering.Renderables {
 	for i, person := range state.data.personQueue.persons {
 		renderables[i] = state.spriteFactory.create("person_"+person.Type, int(person.x), personRenderY, 0)
 	}
-	for _, index := range state.data.selectedCheatTargets {
+	for _, index := range state.data.cheats.selectedCheatTargets {
 		p := state.data.personQueue.persons[index]
 		renderables = append(
 			renderables,
 			state.spriteFactory.create("person_selection", int(p.x), personRenderY, p.selectionAnimation.Frame()),
 		)
 	}
-	if state.data.selectedCheat != noCheatSelected {
-		necessaryTargets := allCheats[state.data.cheats[state.data.selectedCheat].id].targets
-		if len(necessaryTargets) > len(state.data.selectedCheatTargets) {
-			nextTarget := necessaryTargets[len(state.data.selectedCheatTargets)]
+	if state.data.cheats.selectedCheat != noCheatSelected {
+		necessaryTargets := allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets
+		if len(necessaryTargets) > len(state.data.cheats.selectedCheatTargets) {
+			nextTarget := necessaryTargets[len(state.data.cheats.selectedCheatTargets)]
 
 			for i, p := range state.data.personQueue.persons {
-				if nextTarget.isValidTarget(state.data.personQueue, i, state.data.selectedCheatTargets) {
+				if nextTarget.isValidTarget(state.data.personQueue, i, state.data.cheats.selectedCheatTargets) {
 					renderables = append(
 						renderables,
 						state.spriteFactory.create("person_marker", int(p.x), personRenderY, p.markerAnimation.Frame()),

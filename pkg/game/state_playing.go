@@ -9,13 +9,7 @@ const statePlayingID = "playing"
 
 type playingData struct {
 	personQueue *personQueue
-	cheats      []cheat
-
-	// selectedCheat is the index of the chosen cheat. Contains -1 if no cheat is selected.
-	selectedCheat int
-
-	// selectedCheatTargets are the indexes of the chosen cheat targets.
-	selectedCheatTargets []int
+	cheats      cheats
 }
 
 type statePlaying struct {
@@ -34,8 +28,8 @@ func (state *statePlaying) init() {
 	state.addPlayer(140)
 	state.addRandomPerson(100)
 
-	state.data.selectedCheat = noCheatSelected
-	state.data.cheats = make([]cheat, 0)
+	state.data.cheats.selectedCheat = noCheatSelected
+	state.data.cheats.availableCheats = make([]cheat, 0)
 	state.addRandomCheat()
 	state.addRandomCheat()
 }
@@ -43,8 +37,8 @@ func (state *statePlaying) init() {
 func (state *statePlaying) tick(ms int) (next string) {
 	state.data.personQueue.Tick(ms)
 
-	for i := range state.data.cheats {
-		state.data.cheats[i].markerAnimation.Tick(ms)
+	for i := range state.data.cheats.availableCheats {
+		state.data.cheats.availableCheats[i].markerAnimation.Tick(ms)
 	}
 
 	return ""
@@ -60,13 +54,13 @@ func (state *statePlaying) receiveKeyEvent(event interaction.KeyEvent) (next str
 func (state *statePlaying) receiveMouseEvent(event interaction.MouseEvent) (next string) {
 	if event.Type == interaction.MouseUp {
 		// No cheat selected yet, so try to select one.
-		if state.data.selectedCheat == noCheatSelected {
+		if state.data.cheats.selectedCheat == noCheatSelected {
 			state.trySelectCheat(event.X, event.Y)
 			return ""
 		}
 
 		// All cheat targets are selected, try to activate cheat.
-		if len(state.data.selectedCheatTargets) == len(allCheats[state.data.cheats[state.data.selectedCheat].id].targets) {
+		if len(state.data.cheats.selectedCheatTargets) == len(allCheats[state.data.cheats.availableCheats[state.data.cheats.selectedCheat].id].targets) {
 			state.tryActivateCheat(event.X, event.Y)
 			return ""
 		}
