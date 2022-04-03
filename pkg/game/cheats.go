@@ -92,7 +92,7 @@ type cheat struct {
 func (chs *cheats) cheatCoords(index int) (x int, y int) {
 	l := len(chs.availableCheats)
 
-	x = cheatCenterX + cheatWidth*index - (cheatWidth*l)/2
+	x = cheatCenterX + (cheatWidth+cheatMargin)*index - ((cheatWidth+cheatMargin)*l)/2
 	y = cheatRenderY
 
 	if index == chs.selectedCheat {
@@ -116,7 +116,7 @@ const (
 	cheatWidth  = 24
 	cheatHeight = 24
 
-	cheatMargin = 8
+	cheatMargin = 6
 
 	cheatCenterX = 160
 )
