@@ -226,6 +226,24 @@ func (target cheatTargetNotFirstInQueue) isValidTarget(queue personQueue, index 
 	return queue.Len()-1 > index
 }
 
+// cheatTargetOther is a cheat target that applies a cheat target to a different target than the one currently tested, defined by
+// the offset. If no such target exists, this target is invalid.
+type cheatTargetOther struct {
+	offset int
+	target cheatTarget
+}
+
+func (target cheatTargetOther) isValidTarget(queue personQueue, index int, currentTargets []int) bool {
+	otherIndex := index + target.offset
+
+	// If that other target does not exist, fail early.
+	if otherIndex < 0 || otherIndex >= queue.Len() {
+		return false
+	}
+
+	return target.target.isValidTarget(queue, otherIndex, currentTargets)
+}
+
 var allCheats = map[string]cheatAction{
 	cheatIDBombThread: {
 		invoke: func(queue *personQueue, _ []int) {
@@ -263,6 +281,22 @@ var allCheats = map[string]cheatAction{
 			}
 		},
 	},
+	cheatIDShove: {
+		targets: []cheatTarget{
+			cheatTargetAnd{
+				cheatTargetNot{
+					target: cheatTargetHasTag(tagWeak),
+				},
+				cheatTargetOther{
+					target: cheatTargetHasTag(tagWeak),
+					offset: -1,
+				},
+			},
+		},
+		invoke: func(queue *personQueue, targets []int) {
+			queue.swapPersons(targets[0], targets[0]-1)
+		},
+	},
 	cheatIDSwap: {
 		targets: []cheatTarget{
 			cheatTargetAny{},
@@ -281,5 +315,6 @@ const (
 	cheatIDBombThread = "bomb_threat"
 	cheatIDBribe      = "bribe"
 	cheatIDLeftMost   = "leftmost"
+	cheatIDShove      = "shove"
 	cheatIDSwap       = "swap"
 )
