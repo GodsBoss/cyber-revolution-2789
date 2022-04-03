@@ -44,7 +44,7 @@ func (state *statePlayingStart) init() {
 		state.data.addRandomPerson,
 	}
 
-	state.remainingCheats = 4
+	state.remainingCheats = maxCheats
 	state.nextCheat = 1000
 }
 

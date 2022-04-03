@@ -415,3 +415,5 @@ const (
 	cheatIDShove          = "shove"
 	cheatIDSwap           = "swap"
 )
+
+const maxCheats = 3

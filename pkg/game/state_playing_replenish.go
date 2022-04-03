@@ -24,7 +24,11 @@ func (state *statePlayingReplenish) init() {
 	state.beam = newBeam(350)
 	state.addedPerson = false
 
-	state.remainingCheats = 1
+	state.remainingCheats = 0
+	if len(state.data.cheats.availableCheats) < maxCheats {
+		state.remainingCheats = 1
+	}
+
 	state.nextCheat = nextCheatInterval
 }
 
