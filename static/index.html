@@ -16,10 +16,99 @@
 				margin-left:auto;
 				margin-right:auto;
 			}
+
+			#manual {
+				border:1px solid #999;
+				margin-left:auto;
+				margin-right:auto;
+				margin-top:10px;
+				max-width:30em;
+				padding:0.5em;
+			}
+
+			#manual tbody td:first-child {
+				text-align:center;
+			}
 		</style>
 	</head>
 	<body>
 		<p id="hint">Please be patient, this may take a while.</p>
 		<div id="game"></div>
+		<div id="manual">
+			<h1>Manual</h1>
+			<p>The year is 2789. A great revolution is taking place. Traditionally, this leads to many people being killed and it may surprise you, but you are one of them. The guards are somewhat loose regarding the order of their executions, as long as they take place. You probably won't escape, but if you try to cheat a bit, at least you can <em>delay the inevitable</em>.</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Game element</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>Events</strong></td>
+						<td>They change the order inside the queue. Select an event, its targets (if any), then invoke the event. There are also options to discard events and to pass.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/bomb_threat.png"></td>
+						<td>Fake bomb threat. There will be chaos, maybe you can move yourself to a better position.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/bribe.png"></td>
+						<td>Bribery has a history of countless millenia behind it. And - let's be honest - in front of it.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/circuit_failure.png"></td>
+						<td>Are computers perfect? Probably not. A circuit failure may lead a robot to a quicker way to its doom.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/confusion.png"></td>
+						<td>Causing confusion is always helpful to let two people switch their places.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/fart.png"></td>
+						<td>Who wants to stand inside the results of a fart? Let the culprit breathe the result of their own transgressions. Just be aware that not everybody has a nose.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/persuade.png"></td>
+						<td>The power of persuation is strong, but only against the dumb.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/shove.png"></td>
+						<td>Might makes right - if someone is weak, just shove them in front of you.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/discard_cheat.png"></td>
+						<td>If you don't want an event anymore, you can discard it here. Only possible once per execution.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/pass.png"></td>
+						<td>Sometimes it is better to just let the flow of time pass - don't initiate anything before the next execution.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/person_another_world_guard.png"></td>
+						<td>These guards originating from <em>another world</em> are very strong, but also very dumb.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/person_ferengi.png"></td>
+						<td>The <em>Refengi</em> are known for their greed. They value money more than even their own lifes.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/person_green_alien.png"></td>
+						<td>One of the oldest intelligent races. Decayed through eons of civization, they lost their strength and their noses.</td>
+					</tr>
+					<tr>
+						<td><img src="manual/person_robot.png"></td>
+						<td>Robots are known to be immune to things organic life is vulnerable against, but they have their own shortcomings.</td>
+					</tr>
+					<!--
+					<tr>
+						<td><img src="manual/.png"></td>
+						<td></td>
+					</tr>
+					-->
+				</tbody>
+			</table>
+		</div>
 	</body>
 </html>
