@@ -15,6 +15,8 @@ type statePlayingInteraction struct {
 
 	buttonDiscardMarkerAnimation animation.Frames
 	buttonPassMarkerAnimation    animation.Frames
+
+	cheatDiscarded bool
 }
 
 func (state *statePlayingInteraction) init() {
@@ -22,6 +24,8 @@ func (state *statePlayingInteraction) init() {
 
 	state.buttonDiscardMarkerAnimation = animation.NewFrames(3, 80)
 	state.buttonPassMarkerAnimation = animation.NewFrames(3, 80)
+
+	state.cheatDiscarded = false
 }
 
 func (state *statePlayingInteraction) tick(ms int) (next string) {
@@ -47,11 +51,12 @@ func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseE
 			return statePlayingKillID
 		}
 
-		// Cheat selected and discard button pressed, remove cheat and enter kill state.
+		// Cheat selected and discard button pressed, remove cheat.
 		if buttonDiscardRectangle.withinBounds(event.X, event.Y) && !state.data.isNoCheatSelected() {
 			state.data.removeSelectedCheat()
 			state.data.cheats.unselectCheat()
-			return statePlayingKillID
+			state.cheatDiscarded = true
+			return ""
 		}
 
 		// No cheat selected yet, so try to select one.
@@ -93,7 +98,7 @@ func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable 
 		)
 	}
 
-	if !state.data.isNoCheatSelected() {
+	if !state.data.isNoCheatSelected() && !state.cheatDiscarded {
 		renderables = append(
 			renderables,
 			state.spriteFactory.create("cheat_marker", ButtonDiscardRenderX-3, cheatRenderY-3, state.buttonDiscardMarkerAnimation.Frame()),
