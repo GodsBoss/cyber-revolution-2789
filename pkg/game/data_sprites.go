@@ -19,6 +19,9 @@ var dataSprites = map[string]SpriteInfo{
 		W: 61,
 		H: 19,
 	},
+
+	// Person stuff
+
 	"person_player": {
 		X: 443,
 		Y: 31,
@@ -61,6 +64,9 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
+
+	// Cheat stuff
+
 	"cheat_marker": {
 		X: 14,
 		Y: 154,
@@ -79,6 +85,9 @@ var dataSprites = map[string]SpriteInfo{
 		W: 24,
 		H: 24,
 	},
+
+	// Beam
+
 	"beam_start": {
 		X: 301,
 		Y: 187,
@@ -97,6 +106,9 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
+
+	// Kill chamber
+
 	"kill_prolog": {
 		X: 301,
 		Y: 342,
