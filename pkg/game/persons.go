@@ -133,9 +133,37 @@ type personType struct {
 }
 
 var allPersonTypes = map[string]personType{
-	personTypePlayer:       {},
-	personTypeAlienGray:    {},
-	personTypeAlienBuddy:   {},
-	personTypeAlienFerengi: {},
-	personTypeAlienRobot:   {},
+	personTypePlayer: {
+		tags: []string{},
+	},
+	personTypeAlienGray: {
+		tags: []string{
+			tagAnosmic,
+			tagWeak,
+		},
+	},
+	personTypeAlienBuddy: {
+		tags: []string{
+			tagDumb,
+		},
+	},
+	personTypeAlienFerengi: {
+		tags: []string{
+			tagGreedy,
+		},
+	},
+	personTypeAlienRobot: {
+		tags: []string{
+			tagAnosmic,
+			tagMechanical,
+		},
+	},
 }
+
+const (
+	tagAnosmic    = "anosmic"
+	tagDumb       = "dumb"
+	tagGreedy     = "greedy"
+	tagMechanical = "mechanical"
+	tagWeak       = "weak"
+)
