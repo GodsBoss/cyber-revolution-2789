@@ -391,14 +391,25 @@ var allCheats = map[string]cheatAction{
 				cheatTargetNot{
 					target: cheatTargetHasTag(tagWeak),
 				},
-				cheatTargetOther{
-					target: cheatTargetHasTag(tagWeak),
-					offset: -1,
+				cheatTargetOr{
+					cheatTargetOther{
+						target: cheatTargetHasTag(tagWeak),
+						offset: -1,
+					},
+					cheatTargetOther{
+						target: cheatTargetHasTag(tagWeak),
+						offset: 1,
+					},
 				},
+			},
+			cheatTargetAnd{
+				cheatTargetHasTag(tagWeak),
+				cheatTargetMaximumOffsetToPreviousTarget(1),
+				cheatTargetNotTargeted{},
 			},
 		},
 		invoke: func(queue *personQueue, targets []int) {
-			queue.swapPersons(targets[0], targets[0]-1)
+			queue.swapPersons(targets[0], targets[1])
 		},
 	},
 }
