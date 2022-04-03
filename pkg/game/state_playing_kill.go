@@ -42,6 +42,8 @@ func (state *statePlayingKill) tick(ms int) (next string) {
 		case killStates[0]:
 			state.nextKillState = 500
 			state.killState = killStates[1]
+			state.data.setMostRightX(killChamberX - personHorizontalDistance)
+			state.data.removeMostRightPerson()
 		case killStates[1]:
 			state.nextKillState = 100
 			state.killState = killStates[2]
@@ -55,8 +57,6 @@ func (state *statePlayingKill) tick(ms int) (next string) {
 	}
 
 	if !state.data.isAnyPersonMoving() && state.killState == "" {
-		state.data.setMostRightX(killChamberX - personHorizontalDistance)
-		state.data.removeMostRightPerson()
 
 		if state.data.isPlayerAlive() {
 			return statePlayingReplenishID
