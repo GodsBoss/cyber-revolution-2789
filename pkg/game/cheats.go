@@ -237,6 +237,22 @@ func (target cheatTargetOther) isValidTarget(queue personQueue, index int, curre
 	return target.target.isValidTarget(queue, otherIndex, currentTargets)
 }
 
+type cheatTargetMaximumOffsetToPreviousTarget int
+
+func (target cheatTargetMaximumOffsetToPreviousTarget) isValidTarget(queue personQueue, index int, currentTargets []int) bool {
+	if len(currentTargets) == 0 {
+		return false
+	}
+	previousTargetIndex := currentTargets[len(currentTargets)-1]
+
+	diff := index - previousTargetIndex
+	if diff < 0 {
+		diff *= -1
+	}
+
+	return diff <= int(target)
+}
+
 var allCheats = map[string]cheatAction{
 	cheatIDBombThread: {
 		invoke: func(queue *personQueue, _ []int) {
@@ -275,6 +291,39 @@ var allCheats = map[string]cheatAction{
 		},
 		invoke: func(queue *personQueue, targets []int) {
 			queue.swapPersons(targets[0], targets[0]+1)
+		},
+	},
+	cheatIDConfusion: {
+		targets: []cheatTarget{
+			cheatTargetAnd{
+				cheatTargetNot{
+					target: cheatTargetHasTag(tagMechanical),
+				},
+				cheatTargetOr{
+					cheatTargetOther{
+						target: cheatTargetNot{
+							target: cheatTargetHasTag(tagMechanical),
+						},
+						offset: 1,
+					},
+					cheatTargetOther{
+						target: cheatTargetNot{
+							target: cheatTargetHasTag(tagMechanical),
+						},
+						offset: -1,
+					},
+				},
+			},
+			cheatTargetAnd{
+				cheatTargetNot{
+					target: cheatTargetHasTag(tagMechanical),
+				},
+				cheatTargetMaximumOffsetToPreviousTarget(1),
+				cheatTargetNotTargeted{},
+			},
+		},
+		invoke: func(queue *personQueue, targets []int) {
+			queue.swapPersons(targets[0], targets[1])
 		},
 	},
 	cheatIDFart: {
@@ -359,6 +408,7 @@ const (
 	cheatIDBombThread     = "bomb_threat"
 	cheatIDBribe          = "bribe"
 	cheatIDCircuitFailure = "circuit_failure"
+	cheatIDConfusion      = "confusion"
 	cheatIDFart           = "fart"
 	cheatIDLeftMost       = "leftmost"
 	cheatIDPersuade       = "persuade"
