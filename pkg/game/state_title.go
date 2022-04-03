@@ -14,7 +14,9 @@ type stateTitle struct {
 	hoverPlay bool
 }
 
-func (state *stateTitle) init() {}
+func (state *stateTitle) init() {
+	state.hoverPlay = false
+}
 
 func (state *stateTitle) tick(ms int) (next string) {
 	state.kc.tick(ms)
@@ -48,19 +50,12 @@ func (state *stateTitle) playButton() canvas2drendering.Renderable {
 	if state.hoverPlay {
 		id = "play_button_hover"
 	}
-	return state.spriteFactory.create(id, playButtonX, playButtonY, 0)
+	return state.spriteFactory.create(id, playButton.x, playButton.y, 0)
 }
 
 var playButton = rectangle{
-	x:      100,
-	y:      100,
+	x:      137,
+	y:      57,
 	width:  61,
 	height: 19,
 }
-
-const (
-	playButtonX      = 100
-	playButtonY      = 100
-	playButtonWidth  = 61
-	playButtonHeight = 19
-)
