@@ -85,6 +85,48 @@ var dataSprites = map[string]SpriteInfo{
 		W: 24,
 		H: 24,
 	},
+	"cheat_fart": {
+		X: 8,
+		Y: 244,
+		W: 24,
+		H: 24,
+	},
+	"cheat_shove": {
+		X: 8,
+		Y: 268,
+		W: 24,
+		H: 24,
+	},
+	"cheat_persuade": {
+		X: 8,
+		Y: 292,
+		W: 24,
+		H: 24,
+	},
+	"cheat_bomb_threat": {
+		X: 8,
+		Y: 316,
+		W: 24,
+		H: 24,
+	},
+	"cheat_confusion": {
+		X: 8,
+		Y: 340,
+		W: 24,
+		H: 24,
+	},
+	"cheat_circuit_failure": {
+		X: 8,
+		Y: 364,
+		W: 24,
+		H: 24,
+	},
+	"cheat_bribe": {
+		X: 8,
+		Y: 388,
+		W: 24,
+		H: 24,
+	},
 
 	// Beam
 
