@@ -267,6 +267,24 @@ var allCheats = map[string]cheatAction{
 			queue.swapPersons(targets[0], targets[0]+1)
 		},
 	},
+	cheatIDFart: {
+		targets: []cheatTarget{
+			cheatTargetAnd{
+				cheatTargetNot{
+					target: cheatTargetHasTag(tagMechanical),
+				},
+				cheatTargetOther{
+					target: cheatTargetNot{
+						target: cheatTargetHasTag(tagAnosmic),
+					},
+					offset: -1,
+				},
+			},
+		},
+		invoke: func(queue *personQueue, targets []int) {
+			queue.swapPersons(targets[0], targets[0]-1)
+		},
+	},
 	cheatIDLeftMost: {
 		invoke: func(queue *personQueue, _ []int) {
 			playerIndex := 0
@@ -314,6 +332,7 @@ var allCheats = map[string]cheatAction{
 const (
 	cheatIDBombThread = "bomb_threat"
 	cheatIDBribe      = "bribe"
+	cheatIDFart       = "fart"
 	cheatIDLeftMost   = "leftmost"
 	cheatIDShove      = "shove"
 	cheatIDSwap       = "swap"
