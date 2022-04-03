@@ -70,6 +70,11 @@ func (queue *personQueue) swapPersons(i, j int) {
 	queue.persons[i], queue.persons[j] = queue.persons[j], queue.persons[i]
 }
 
+// Len returns the number of persons in the queue.
+func (queue *personQueue) Len() int {
+	return len(queue.persons)
+}
+
 type person struct {
 	Type string
 

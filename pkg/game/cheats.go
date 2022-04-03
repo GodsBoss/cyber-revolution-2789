@@ -225,7 +225,7 @@ var allCheats = map[string]cheatAction{
 			rand.Shuffle(len(queue.persons), queue.swapPersons)
 
 			// We don't want the player to die here, so move them to another position.
-			lastIndex := len(queue.persons) - 1
+			lastIndex := queue.Len() - 1
 			if queue.persons[lastIndex].Type == personTypePlayer {
 				queue.swapPersons(lastIndex, rand.Intn(lastIndex))
 			}
