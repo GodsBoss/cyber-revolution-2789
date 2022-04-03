@@ -47,6 +47,8 @@ func (queue *personQueue) Tick(ms int) {
 }
 
 func (queue *personQueue) addPerson(p person) {
+	p.animation = animation.NewFrames(3, 200)
+	p.animation.Randomize()
 	p.markerAnimation = animation.NewFrames(3, 49)
 	p.markerAnimation.Randomize()
 	p.selectionAnimation = animation.NewFrames(3, 49)
@@ -81,6 +83,7 @@ type person struct {
 	x        float64
 	desiredX float64
 
+	animation          animation.Frames
 	markerAnimation    animation.Frames
 	selectionAnimation animation.Frames
 
@@ -101,6 +104,7 @@ func (p person) bounds() rectangle {
 }
 
 func (p *person) Tick(ms int) {
+	p.animation.Tick(ms)
 	p.selectionAnimation.Tick(ms)
 	p.markerAnimation.Tick(ms)
 	speed := personSpeed * (float64(ms) / 1000)
