@@ -388,4 +388,4 @@ const (
 	cheatIDShove          = "shove"
 )
 
-const maxCheats = 3
+const maxCheats = 5
