@@ -27,6 +27,7 @@ func (state *statePlayingKill) init() {
 
 	state.killState = killStates[0]
 	state.nextKillState = 500
+	state.killFadingFrame = 0
 	state.killAnimation = animation.NewFrames(3, 75)
 }
 
