@@ -79,6 +79,20 @@ func (chs *cheats) addRandomCheat() {
 	chs.availableCheats = append(chs.availableCheats, newCheat)
 }
 
+func (chs *cheats) isCancelCheat(x int, y int) bool {
+	if chs.isNoCheatSelected() {
+		return false
+	}
+	chX, chY := chs.cheatCoords(chs.selectedCheat)
+	rect := rectangle{
+		x:      chX,
+		y:      chY + 25,
+		width:  24,
+		height: 9,
+	}
+	return rect.withinBounds(x, y)
+}
+
 const (
 	noCheatSelected = -1
 )

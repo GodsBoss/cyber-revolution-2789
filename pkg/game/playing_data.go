@@ -156,6 +156,14 @@ func (data *playingData) renderedCheats(sf *spriteFactory, includeMarkers bool) 
 
 	renderables := make(canvas2drendering.Renderables, l)
 
+	if !data.isNoCheatSelected() {
+		x, y := data.cheatCoords(data.cheats.selectedCheat)
+		renderables = append(
+			renderables,
+			sf.create("cheat_cancel", x, y+25, 0),
+		)
+	}
+
 	for i, cheat := range data.cheats.availableCheats {
 		x, y := data.cheatCoords(i)
 
@@ -192,4 +200,8 @@ func (data *playingData) removeMostRightPerson() {
 
 func (data *playingData) isPlayerAlive() bool {
 	return data.personQueue.isPlayerAlive()
+}
+
+func (data *playingData) isCancelCheat(x int, y int) bool {
+	return data.cheats.isCancelCheat(x, y)
 }

@@ -82,6 +82,12 @@ var dataSprites = map[string]SpriteInfo{
 
 	// Cheat stuff
 
+	"cheat_cancel": {
+		X: 63,
+		Y: 336,
+		W: 24,
+		H: 9,
+	},
 	"cheat_marker": {
 		X: 14,
 		Y: 154,

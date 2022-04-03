@@ -40,9 +40,6 @@ func (state *statePlayingInteraction) tick(ms int) (next string) {
 }
 
 func (state *statePlayingInteraction) receiveKeyEvent(event interaction.KeyEvent) (next string) {
-	if event.Type == interaction.KeyUp && event.Key == "Escape" {
-		state.unselectCheat()
-	}
 	return ""
 }
 
@@ -51,6 +48,12 @@ func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseE
 		// No cheat selected and pass button pressed, directly enter kill state.
 		if buttonPassRectangle.withinBounds(event.X, event.Y) && state.data.isNoCheatSelected() {
 			return statePlayingKillID
+		}
+
+		// Cancel cheat button pressed.
+		if state.data.isCancelCheat(event.X, event.Y) {
+			state.data.unselectCheat()
+			return ""
 		}
 
 		// Cheat selected and discard button pressed, remove cheat.
