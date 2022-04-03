@@ -42,6 +42,18 @@ func (state *statePlayingInteraction) receiveKeyEvent(event interaction.KeyEvent
 
 func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseEvent) (next string) {
 	if event.Type == interaction.MouseUp {
+		// No cheat selected and pass button pressed, directly enter kill state.
+		if buttonPassRectangle.withinBounds(event.X, event.Y) && state.data.isNoCheatSelected() {
+			return statePlayingKillID
+		}
+
+		// Cheat selected and discard button pressed, remove cheat and enter kill state.
+		if buttonDiscardRectangle.withinBounds(event.X, event.Y) && !state.data.isNoCheatSelected() {
+			state.data.removeSelectedCheat()
+			state.data.cheats.unselectCheat()
+			return statePlayingKillID
+		}
+
 		// No cheat selected yet, so try to select one.
 		if state.data.isNoCheatSelected() {
 			state.data.trySelectCheat(event.X, event.Y)
@@ -99,3 +111,17 @@ const (
 	ButtonPassRenderX    = 250
 	ButtonDiscardRenderX = 280
 )
+
+var buttonPassRectangle = rectangle{
+	x:      ButtonPassRenderX,
+	y:      cheatRenderY,
+	width:  24,
+	height: 24,
+}
+
+var buttonDiscardRectangle = rectangle{
+	x:      ButtonDiscardRenderX,
+	y:      cheatRenderY,
+	width:  24,
+	height: 24,
+}

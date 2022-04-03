@@ -71,14 +71,18 @@ func (data *playingData) activateCheat() {
 	allCheats[data.cheats.availableCheats[data.cheats.selectedCheat].id].invoke(&data.personQueue, data.cheats.selectedCheatTargets)
 
 	// Cheat has been used, remove it.
-	data.cheats.availableCheats = append(
-		data.cheats.availableCheats[0:data.cheats.selectedCheat],
-		data.cheats.availableCheats[data.cheats.selectedCheat+1:]...,
-	)
+	data.removeSelectedCheat()
 	data.unselectCheat()
 
 	// Person queue probably changed, recalculate.
 	data.personQueue.calculateDesiredX()
+}
+
+func (data *playingData) removeSelectedCheat() {
+	data.cheats.availableCheats = append(
+		data.cheats.availableCheats[0:data.cheats.selectedCheat],
+		data.cheats.availableCheats[data.cheats.selectedCheat+1:]...,
+	)
 }
 
 func (data *playingData) addRandomPerson(x float64) {
