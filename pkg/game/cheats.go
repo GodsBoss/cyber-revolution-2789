@@ -219,6 +219,13 @@ func (target cheatTargetOr) isValidTarget(queue personQueue, index int, currentT
 	return false
 }
 
+// cheatTargetNotFirstInQueue is a cheat target that applies if a person is not first one of the queue, i.e. the next victim.
+type cheatTargetNotFirstInQueue struct{}
+
+func (target cheatTargetNotFirstInQueue) isValidTarget(queue personQueue, index int, _ []int) bool {
+	return queue.Len()-1 > index
+}
+
 var allCheats = map[string]cheatAction{
 	cheatIDBombThread: {
 		invoke: func(queue *personQueue, _ []int) {
@@ -229,6 +236,17 @@ var allCheats = map[string]cheatAction{
 			if queue.persons[lastIndex].Type == personTypePlayer {
 				queue.swapPersons(lastIndex, rand.Intn(lastIndex))
 			}
+		},
+	},
+	cheatIDBribe: {
+		targets: []cheatTarget{
+			cheatTargetAnd{
+				cheatTargetHasTag(tagGreedy),
+				cheatTargetNotFirstInQueue{},
+			},
+		},
+		invoke: func(queue *personQueue, targets []int) {
+			queue.swapPersons(targets[0], targets[0]+1)
 		},
 	},
 	cheatIDLeftMost: {
@@ -261,6 +279,7 @@ var allCheats = map[string]cheatAction{
 
 const (
 	cheatIDBombThread = "bomb_threat"
+	cheatIDBribe      = "bribe"
 	cheatIDLeftMost   = "leftmost"
 	cheatIDSwap       = "swap"
 )
