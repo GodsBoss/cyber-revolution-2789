@@ -127,6 +127,18 @@ var dataSprites = map[string]SpriteInfo{
 		W: 24,
 		H: 24,
 	},
+	"button_discard": {
+		X: 8,
+		Y: 412,
+		W: 24,
+		H: 24,
+	},
+	"button_pass": {
+		X: 8,
+		Y: 436,
+		W: 24,
+		H: 24,
+	},
 
 	// Beam
 

@@ -58,9 +58,20 @@ func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable 
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, true)...)
 
+	renderables = append(
+		renderables,
+		state.spriteFactory.create("button_discard", ButtonDiscardRenderX, cheatRenderY, 0),
+		state.spriteFactory.create("button_pass", ButtonPassRenderX, cheatRenderY, 0),
+	)
+
 	return renderables
 }
 
 func (state *statePlayingInteraction) unselectCheat() {
 	state.data.unselectCheat()
 }
+
+const (
+	ButtonPassRenderX    = 250
+	ButtonDiscardRenderX = 280
+)
