@@ -65,6 +65,11 @@ func (queue personQueue) isAnyPersonMoving() bool {
 	return false
 }
 
+// swapPersons swaps the two persons at the indexes i and j. Will panic if these are not in range.
+func (queue *personQueue) swapPersons(i, j int) {
+	queue.persons[i], queue.persons[j] = queue.persons[j], queue.persons[i]
+}
+
 type person struct {
 	Type string
 

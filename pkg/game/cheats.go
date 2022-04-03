@@ -222,16 +222,12 @@ func (target cheatTargetOr) isValidTarget(queue personQueue, index int, currentT
 var allCheats = map[string]cheatAction{
 	cheatIDBombThread: {
 		invoke: func(queue *personQueue, _ []int) {
-			swap := func(i, j int) {
-				queue.persons[i], queue.persons[j] = queue.persons[j], queue.persons[i]
-			}
-			rand.Shuffle(len(queue.persons), swap)
-			lastIndex := len(queue.persons) - 1
+			rand.Shuffle(len(queue.persons), queue.swapPersons)
 
 			// We don't want the player to die here, so move them to another position.
+			lastIndex := len(queue.persons) - 1
 			if queue.persons[lastIndex].Type == personTypePlayer {
-				nextVictimIndex := rand.Intn(lastIndex)
-				queue.persons[lastIndex], queue.persons[nextVictimIndex] = queue.persons[nextVictimIndex], queue.persons[lastIndex]
+				queue.swapPersons(lastIndex, rand.Intn(lastIndex))
 			}
 		},
 	},
@@ -244,7 +240,7 @@ var allCheats = map[string]cheatAction{
 				}
 			}
 			for playerIndex > 0 {
-				queue.persons[playerIndex], queue.persons[playerIndex-1] = queue.persons[playerIndex-1], queue.persons[playerIndex]
+				queue.swapPersons(playerIndex, playerIndex-1)
 				playerIndex--
 			}
 		},
@@ -258,7 +254,7 @@ var allCheats = map[string]cheatAction{
 			if len(targets) < 2 {
 				return
 			}
-			queue.persons[targets[0]], queue.persons[targets[1]] = queue.persons[targets[1]], queue.persons[targets[0]]
+			queue.swapPersons(targets[0], targets[1])
 		},
 	},
 }
