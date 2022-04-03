@@ -111,8 +111,12 @@ func (p person) isMoving() bool {
 }
 
 const (
-	personTypePlayer     = "player"
-	personTypeGreenAlien = "green_alien"
+	personTypePlayer = "player"
+
+	personTypeAlienGray    = "alien_gray"
+	personTypeAlienBuddy   = "alien_buddy"
+	personTypeAlienFerengi = "alien_ferengi"
+	personTypeAlienRobot   = "alien_robot"
 
 	personRenderY            = 80
 	personHorizontalDistance = 30
@@ -129,6 +133,9 @@ type personType struct {
 }
 
 var allPersonTypes = map[string]personType{
-	personTypeGreenAlien: {},
-	personTypePlayer:     {},
+	personTypePlayer:       {},
+	personTypeAlienGray:    {},
+	personTypeAlienBuddy:   {},
+	personTypeAlienFerengi: {},
+	personTypeAlienRobot:   {},
 }

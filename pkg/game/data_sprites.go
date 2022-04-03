@@ -37,9 +37,27 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
-	"person_green_alien": {
+	"person_alien_gray": {
 		X: 443,
 		Y: 79,
+		W: 32,
+		H: 48,
+	},
+	"person_alien_buddy": {
+		X: 443,
+		Y: 127,
+		W: 32,
+		H: 48,
+	},
+	"person_alien_ferengi": {
+		X: 443,
+		Y: 175,
+		W: 32,
+		H: 48,
+	},
+	"person_alien_robot": {
+		X: 443,
+		Y: 223,
 		W: 32,
 		H: 48,
 	},
