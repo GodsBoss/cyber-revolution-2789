@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/GodsBoss/cyber-revolution-2789/pkg/animation"
 	"github.com/GodsBoss/gggg/pkg/interaction"
 	"github.com/GodsBoss/gggg/pkg/rendering/canvas2drendering"
 )
@@ -11,14 +12,23 @@ type statePlayingInteraction struct {
 	spriteFactory *spriteFactory
 
 	data *playingData
+
+	buttonDiscardMarkerAnimation animation.Frames
+	buttonPassMarkerAnimation    animation.Frames
 }
 
 func (state *statePlayingInteraction) init() {
 	state.data.unselectCheat()
+
+	state.buttonDiscardMarkerAnimation = animation.NewFrames(3, 80)
+	state.buttonPassMarkerAnimation = animation.NewFrames(3, 80)
 }
 
 func (state *statePlayingInteraction) tick(ms int) (next string) {
 	state.data.tick(ms)
+
+	state.buttonDiscardMarkerAnimation.Tick(ms)
+	state.buttonPassMarkerAnimation.Tick(ms)
 
 	return ""
 }
@@ -63,6 +73,20 @@ func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable 
 		state.spriteFactory.create("button_discard", ButtonDiscardRenderX, cheatRenderY, 0),
 		state.spriteFactory.create("button_pass", ButtonPassRenderX, cheatRenderY, 0),
 	)
+
+	if state.data.isNoCheatSelected() {
+		renderables = append(
+			renderables,
+			state.spriteFactory.create("cheat_marker", ButtonPassRenderX-3, cheatRenderY-3, state.buttonPassMarkerAnimation.Frame()),
+		)
+	}
+
+	if !state.data.isNoCheatSelected() {
+		renderables = append(
+			renderables,
+			state.spriteFactory.create("cheat_marker", ButtonDiscardRenderX-3, cheatRenderY-3, state.buttonDiscardMarkerAnimation.Frame()),
+		)
+	}
 
 	return renderables
 }
