@@ -219,13 +219,6 @@ func (target cheatTargetOr) isValidTarget(queue personQueue, index int, currentT
 	return false
 }
 
-// cheatTargetNotFirstInQueue is a cheat target that applies if a person is not first one of the queue, i.e. the next victim.
-type cheatTargetNotFirstInQueue struct{}
-
-func (target cheatTargetNotFirstInQueue) isValidTarget(queue personQueue, index int, _ []int) bool {
-	return queue.Len()-1 > index
-}
-
 // cheatTargetOther is a cheat target that applies a cheat target to a different target than the one currently tested, defined by
 // the offset. If no such target exists, this target is invalid.
 type cheatTargetOther struct {
@@ -260,7 +253,10 @@ var allCheats = map[string]cheatAction{
 		targets: []cheatTarget{
 			cheatTargetAnd{
 				cheatTargetHasTag(tagGreedy),
-				cheatTargetNotFirstInQueue{},
+				cheatTargetOther{
+					target: cheatTargetAny{},
+					offset: 1,
+				},
 			},
 		},
 		invoke: func(queue *personQueue, targets []int) {
