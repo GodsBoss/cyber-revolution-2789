@@ -10,6 +10,7 @@ const statePlayingInteractionID = "playing"
 
 type statePlayingInteraction struct {
 	spriteFactory *spriteFactory
+	kc            *killChamber
 
 	data *playingData
 
@@ -30,6 +31,7 @@ func (state *statePlayingInteraction) init() {
 
 func (state *statePlayingInteraction) tick(ms int) (next string) {
 	state.data.tick(ms)
+	state.kc.tick(ms)
 
 	state.buttonDiscardMarkerAnimation.Tick(ms)
 	state.buttonPassMarkerAnimation.Tick(ms)
@@ -82,6 +84,7 @@ func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseE
 func (state *statePlayingInteraction) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
+		state.kc.render(state.spriteFactory, false),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, true)...)
 

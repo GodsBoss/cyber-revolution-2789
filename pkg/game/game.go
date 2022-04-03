@@ -20,6 +20,7 @@ func New(img *dom.Image) dominit.Game {
 		scaler: sc,
 		infos:  dataSprites,
 	}
+	kc := newKillChamber()
 	playingData := &playingData{}
 
 	return &game{
@@ -29,6 +30,7 @@ func New(img *dom.Image) dominit.Game {
 			states: map[string]state{
 				stateTitleID: &stateTitle{
 					spriteFactory: sf,
+					kc:            kc,
 				},
 				stateGameOverID: &stateGameOver{
 					spriteFactory: sf,
@@ -36,26 +38,32 @@ func New(img *dom.Image) dominit.Game {
 				statePlayingStartID: &statePlayingStart{
 					spriteFactory: sf,
 					data:          playingData,
+					kc:            kc,
 				},
 				statePlayingInteractionID: &statePlayingInteraction{
 					spriteFactory: sf,
 					data:          playingData,
+					kc:            kc,
 				},
 				statePlayingInvokeActionID: &statePlayingInvokeAction{
 					spriteFactory: sf,
 					data:          playingData,
+					kc:            kc,
 				},
 				statePlayingKillID: &statePlayingKill{
 					spriteFactory: sf,
 					data:          playingData,
+					kc:            kc,
 				},
 				statePlayingDeadID: &statePlayingDead{
 					spriteFactory: sf,
 					data:          playingData,
+					kc:            kc,
 				},
 				statePlayingReplenishID: &statePlayingReplenish{
 					spriteFactory: sf,
 					data:          playingData,
+					kc:            kc,
 				},
 			},
 			currentStateID: stateTitleID,

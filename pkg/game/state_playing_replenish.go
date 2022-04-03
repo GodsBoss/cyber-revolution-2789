@@ -9,6 +9,7 @@ const statePlayingReplenishID = "playing_replenish"
 
 type statePlayingReplenish struct {
 	spriteFactory *spriteFactory
+	kc            *killChamber
 
 	data *playingData
 
@@ -34,6 +35,7 @@ func (state *statePlayingReplenish) init() {
 
 func (state *statePlayingReplenish) tick(ms int) (next string) {
 	state.data.tick(ms)
+	state.kc.tick(ms)
 
 	if state.beam.isOver() && !state.data.isAnyPersonMoving() && state.remainingCheats == 0 {
 		return statePlayingInteractionID
@@ -67,6 +69,7 @@ func (state *statePlayingReplenish) receiveMouseEvent(event interaction.MouseEve
 func (state *statePlayingReplenish) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
+		state.kc.render(state.spriteFactory, false),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
 	renderables = append(renderables, state.beam.rendered(state.spriteFactory, 0, personRenderY))

@@ -11,6 +11,7 @@ const statePlayingStartID = "playing_start"
 // initial set of cheats is added. If everything is in place, the next state, player interaction, is started.
 type statePlayingStart struct {
 	spriteFactory *spriteFactory
+	kc            *killChamber
 
 	data *playingData
 
@@ -51,6 +52,7 @@ func (state *statePlayingStart) init() {
 func (state *statePlayingStart) tick(ms int) (next string) {
 	state.data.tick(ms)
 	state.beam.tick(ms)
+	state.kc.tick(ms)
 
 	if state.waitForBeamIsOver && state.beam.isOver() && len(state.remainingPersons) > 0 {
 		state.waitForBeamIsOver = false
@@ -90,6 +92,7 @@ func (state *statePlayingStart) receiveMouseEvent(event interaction.MouseEvent) 
 func (state *statePlayingStart) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
+		state.kc.render(state.spriteFactory, false),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
 	renderables = append(renderables, state.beam.rendered(state.spriteFactory, 0, personRenderY))

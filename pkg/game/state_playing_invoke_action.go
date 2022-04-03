@@ -9,6 +9,7 @@ const statePlayingInvokeActionID = "playing_invoke_action"
 
 type statePlayingInvokeAction struct {
 	spriteFactory *spriteFactory
+	kc            *killChamber
 
 	data *playingData
 }
@@ -19,6 +20,7 @@ func (state *statePlayingInvokeAction) init() {
 
 func (state *statePlayingInvokeAction) tick(ms int) (next string) {
 	state.data.tick(ms)
+	state.kc.tick(ms)
 
 	if !state.data.isAnyPersonMoving() {
 		return statePlayingKillID
@@ -40,6 +42,7 @@ func (state *statePlayingInvokeAction) receiveMouseEvent(event interaction.Mouse
 func (state *statePlayingInvokeAction) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
+		state.kc.render(state.spriteFactory, false),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
 

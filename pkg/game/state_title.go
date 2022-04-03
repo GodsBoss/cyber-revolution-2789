@@ -9,6 +9,7 @@ const stateTitleID = "title"
 
 type stateTitle struct {
 	spriteFactory *spriteFactory
+	kc            *killChamber
 
 	hoverPlay bool
 }
@@ -16,6 +17,7 @@ type stateTitle struct {
 func (state *stateTitle) init() {}
 
 func (state *stateTitle) tick(ms int) (next string) {
+	state.kc.tick(ms)
 	return ""
 }
 
@@ -36,6 +38,7 @@ func (state *stateTitle) receiveMouseEvent(event interaction.MouseEvent) (next s
 func (state *stateTitle) renderable() canvas2drendering.Renderable {
 	return canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
+		state.kc.render(state.spriteFactory, false),
 		state.playButton(),
 	}
 }

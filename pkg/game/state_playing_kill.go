@@ -11,6 +11,7 @@ const statePlayingKillID = "playing_kill"
 // statePlayingKill is the state responsible for killing the person from the first position of the queue.
 type statePlayingKill struct {
 	spriteFactory *spriteFactory
+	kc            *killChamber
 
 	data *playingData
 
@@ -31,6 +32,7 @@ func (state *statePlayingKill) init() {
 
 func (state *statePlayingKill) tick(ms int) (next string) {
 	state.data.tick(ms)
+	state.kc.tick(ms)
 	state.killAnimation.Tick(ms)
 
 	state.nextKillState -= ms
@@ -78,6 +80,7 @@ func (state *statePlayingKill) receiveMouseEvent(event interaction.MouseEvent) (
 func (state *statePlayingKill) renderable() canvas2drendering.Renderable {
 	renderables := canvas2drendering.Renderables{
 		state.spriteFactory.create("background", 0, 0, 0),
+		state.kc.render(state.spriteFactory, true),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
 

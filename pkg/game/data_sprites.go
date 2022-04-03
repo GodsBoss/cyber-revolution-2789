@@ -169,4 +169,16 @@ var dataSprites = map[string]SpriteInfo{
 		W: 32,
 		H: 48,
 	},
+	"kill_chamber_ground": {
+		X: 574,
+		Y: 142,
+		W: 20,
+		H: 9,
+	},
+	"kill_chamber_ground_active": {
+		X: 574,
+		Y: 152,
+		W: 20,
+		H: 9,
+	},
 }
