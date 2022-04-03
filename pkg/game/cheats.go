@@ -263,6 +263,20 @@ var allCheats = map[string]cheatAction{
 			queue.swapPersons(targets[0], targets[0]+1)
 		},
 	},
+	cheatIDCircuitFailure: {
+		targets: []cheatTarget{
+			cheatTargetAnd{
+				cheatTargetHasTag(tagMechanical),
+				cheatTargetOther{
+					target: cheatTargetAny{},
+					offset: 1,
+				},
+			},
+		},
+		invoke: func(queue *personQueue, targets []int) {
+			queue.swapPersons(targets[0], targets[0]+1)
+		},
+	},
 	cheatIDFart: {
 		targets: []cheatTarget{
 			cheatTargetAnd{
@@ -342,11 +356,12 @@ var allCheats = map[string]cheatAction{
 }
 
 const (
-	cheatIDBombThread = "bomb_threat"
-	cheatIDBribe      = "bribe"
-	cheatIDFart       = "fart"
-	cheatIDLeftMost   = "leftmost"
-	cheatIDPersuade   = "persuade"
-	cheatIDShove      = "shove"
-	cheatIDSwap       = "swap"
+	cheatIDBombThread     = "bomb_threat"
+	cheatIDBribe          = "bribe"
+	cheatIDCircuitFailure = "circuit_failure"
+	cheatIDFart           = "fart"
+	cheatIDLeftMost       = "leftmost"
+	cheatIDPersuade       = "persuade"
+	cheatIDShove          = "shove"
+	cheatIDSwap           = "swap"
 )
