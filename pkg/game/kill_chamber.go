@@ -32,5 +32,5 @@ func (chamber *killChamber) render(sf *spriteFactory, active bool) canvas2drende
 
 const (
 	killChamberBottomX = 286
-	killChamberBottomY = 124
+	killChamberBottomY = 123
 )
