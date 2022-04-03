@@ -44,7 +44,9 @@ func (state *statePlayingInteraction) receiveMouseEvent(event interaction.MouseE
 		}
 
 		// Try to select target.
-		state.trySelectTarget(event.X, event.Y)
+		if !state.data.areAllTargetsSelected() {
+			state.trySelectTarget(event.X, event.Y)
+		}
 	}
 
 	return ""
