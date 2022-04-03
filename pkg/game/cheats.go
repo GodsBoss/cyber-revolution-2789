@@ -344,20 +344,6 @@ var allCheats = map[string]cheatAction{
 			queue.swapPersons(targets[0], targets[0]-1)
 		},
 	},
-	cheatIDLeftMost: {
-		invoke: func(queue *personQueue, _ []int) {
-			playerIndex := 0
-			for i := range queue.persons {
-				if queue.persons[i].Type == personTypePlayer {
-					playerIndex = i
-				}
-			}
-			for playerIndex > 0 {
-				queue.swapPersons(playerIndex, playerIndex-1)
-				playerIndex--
-			}
-		},
-	},
 	cheatIDPersuade: {
 		targets: []cheatTarget{
 			cheatTargetAnd{
@@ -390,18 +376,6 @@ var allCheats = map[string]cheatAction{
 			queue.swapPersons(targets[0], targets[0]-1)
 		},
 	},
-	cheatIDSwap: {
-		targets: []cheatTarget{
-			cheatTargetAny{},
-			cheatTargetNotTargeted{},
-		},
-		invoke: func(queue *personQueue, targets []int) {
-			if len(targets) < 2 {
-				return
-			}
-			queue.swapPersons(targets[0], targets[1])
-		},
-	},
 }
 
 const (
@@ -410,10 +384,8 @@ const (
 	cheatIDCircuitFailure = "circuit_failure"
 	cheatIDConfusion      = "confusion"
 	cheatIDFart           = "fart"
-	cheatIDLeftMost       = "leftmost"
 	cheatIDPersuade       = "persuade"
 	cheatIDShove          = "shove"
-	cheatIDSwap           = "swap"
 )
 
 const maxCheats = 3

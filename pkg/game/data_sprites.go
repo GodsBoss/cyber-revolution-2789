@@ -73,18 +73,6 @@ var dataSprites = map[string]SpriteInfo{
 		W: 30,
 		H: 30,
 	},
-	"cheat_leftmost": {
-		X: 8,
-		Y: 196,
-		W: 24,
-		H: 24,
-	},
-	"cheat_swap": {
-		X: 8,
-		Y: 220,
-		W: 24,
-		H: 24,
-	},
 	"cheat_fart": {
 		X: 8,
 		Y: 244,
