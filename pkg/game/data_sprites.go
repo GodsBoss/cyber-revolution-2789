@@ -7,6 +7,9 @@ var dataSprites = map[string]SpriteInfo{
 		W: 320,
 		H: 200,
 	},
+
+	// Buttons
+
 	"play_button": {
 		X: 236,
 		Y: 38,
@@ -15,6 +18,18 @@ var dataSprites = map[string]SpriteInfo{
 	},
 	"play_button_hover": {
 		X: 236,
+		Y: 58,
+		W: 61,
+		H: 19,
+	},
+	"back_button": {
+		X: 298,
+		Y: 38,
+		W: 61,
+		H: 19,
+	},
+	"back_button_hover": {
+		X: 298,
 		Y: 58,
 		W: 61,
 		H: 19,

@@ -13,9 +13,13 @@ type statePlayingDead struct {
 	kc            *killChamber
 
 	data *playingData
+
+	hoverBack bool
 }
 
-func (state *statePlayingDead) init() {}
+func (state *statePlayingDead) init() {
+	state.hoverBack = false
+}
 
 func (state *statePlayingDead) tick(ms int) (next string) {
 	state.data.tick(ms)
@@ -25,14 +29,16 @@ func (state *statePlayingDead) tick(ms int) (next string) {
 }
 
 func (state *statePlayingDead) receiveKeyEvent(event interaction.KeyEvent) (next string) {
-	if event.Type == interaction.KeyUp && event.Key == "t" {
-		return stateTitleID
-	}
-
 	return ""
 }
 
 func (state *statePlayingDead) receiveMouseEvent(event interaction.MouseEvent) (next string) {
+	if event.Type == interaction.MouseMove {
+		state.hoverBack = playButton.withinBounds(event.X, event.Y)
+	}
+	if event.Type == interaction.MouseUp && state.hoverBack {
+		return stateTitleID
+	}
 	return ""
 }
 
@@ -42,6 +48,15 @@ func (state *statePlayingDead) renderable() canvas2drendering.Renderable {
 		state.kc.render(state.spriteFactory, false),
 	}
 	renderables = append(renderables, state.data.rendered(state.spriteFactory, false)...)
+	renderables = append(renderables, state.backButton())
 
 	return renderables
+}
+
+func (state *statePlayingDead) backButton() canvas2drendering.Renderable {
+	id := "back_button"
+	if state.hoverBack {
+		id = "back_button_hover"
+	}
+	return state.spriteFactory.create(id, playButton.x, playButton.y, 0)
 }
